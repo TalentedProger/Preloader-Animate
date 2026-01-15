@@ -44,13 +44,13 @@ export function Preloader({ onComplete }: PreloaderProps) {
   useEffect(() => {
     // Sequence timing
     const timers = [
-      setTimeout(() => setCurrentStep(1), 2000), // Step 1 to 2
-      setTimeout(() => setCurrentStep(2), 4000), // Step 2 to 3
-      setTimeout(() => setCurrentStep(3), 6000), // Step 3 to 4
+      setTimeout(() => setCurrentStep(1), 1800), // Step 1 to 2
+      setTimeout(() => setCurrentStep(2), 3600), // Step 2 to 3
+      setTimeout(() => setCurrentStep(3), 5400), // Step 3 to 4
       setTimeout(() => {
         // End of sequence
         onComplete();
-      }, 8500),
+      }, 7500),
     ];
 
     return () => timers.forEach(clearTimeout);
@@ -72,13 +72,11 @@ export function Preloader({ onComplete }: PreloaderProps) {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 1.2,
-        ease: [0.22, 1, 0.36, 1], // Custom ease for smooth cinematic feel
+        duration: 0.8,
+        ease: [0.25, 0.1, 0.25, 1],
       },
     },
     exit: {
-        // We don't actually exit images, we layer them. 
-        // But if we needed to, we'd define it here.
         opacity: 0 
     }
   };
@@ -99,15 +97,15 @@ export function Preloader({ onComplete }: PreloaderProps) {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 1.5,
-        ease: [0.22, 1, 0.36, 1],
-        delay: 0.2, // Let the image start first
+        duration: 0.8,
+        ease: [0.25, 0.1, 0.25, 1],
+        delay: 0.05,
       },
     },
     exit: {
       opacity: 0,
       scale: 1.1,
-      transition: { duration: 0.5 }
+      transition: { duration: 0.3 }
     }
   };
 
@@ -123,6 +121,10 @@ export function Preloader({ onComplete }: PreloaderProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-black text-white">
+      {/* Preload images hidden */}
+      <div className="hidden">
+        {steps.map(s => <img key={s.id} src={s.image} />)}
+      </div>
       <AnimatePresence mode="popLayout">
         {steps.map((step, index) => {
           // Only render steps that are active (current or past)
