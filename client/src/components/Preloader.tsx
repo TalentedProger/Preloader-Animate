@@ -54,7 +54,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
       const newProgress = Math.min(Math.floor((elapsed / totalDuration) * 100), 100);
       setProgress(newProgress);
 
-      // Determine step based on progress
+      // Determine step based on progress: 0-25, 25-50, 50-75, 75-100
       if (newProgress >= 75) {
         setCurrentStep(3);
       } else if (newProgress >= 50) {
@@ -69,7 +69,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
         clearInterval(progressInterval);
         onComplete();
       }
-    }, 16); // ~60fps
+    }, 10); // Higher frequency for smoother tracking
 
     return () => clearInterval(progressInterval);
   }, [onComplete]);
@@ -90,8 +90,8 @@ export function Preloader({ onComplete }: PreloaderProps) {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.8,
-        ease: [0.25, 0.1, 0.25, 1],
+        duration: 0.6, // Faster entrance to avoid delay perception
+        ease: "easeOut",
       },
     },
     exit: {
@@ -115,26 +115,19 @@ export function Preloader({ onComplete }: PreloaderProps) {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.8,
-        ease: [0.25, 0.1, 0.25, 1],
-        delay: 0.05,
+        duration: 0.6, // Faster entrance
+        ease: "easeOut",
       },
     },
     exit: {
       opacity: 0,
-      scale: 1.1,
-      transition: { duration: 0.3 }
+      scale: 1.05,
+      transition: { duration: 0.2 }
     }
   };
 
   // Calculate fill percentage for each word
-  // First word fills 0% -> 25%
-  // Second word fills 25% -> 50%
-  // Third word fills 50% -> 75%
-  // Fourth word fills 75% -> 100%
-  const getStepFillPercentage = (stepIndex: number, totalProgress: number) => {
-    // We want the word to reflect the TOTAL progress of the site
-    // so it doesn't reset to 0% for each word.
+  const getStepFillPercentage = (totalProgress: number) => {
     return `${totalProgress}%`;
   };
 
@@ -145,19 +138,19 @@ export function Preloader({ onComplete }: PreloaderProps) {
         {steps.map(s => <img key={s.id} src={s.image} />)}
       </div>
 
-      <AnimatePresence mode="popLayout">
+      <AnimatePresence mode="popLayout" initial={false}>
         {steps.map((step, index) => {
           // Only render steps that are active (current or past)
           if (index > currentStep) return null;
 
           const isCurrent = index === currentStep;
-          const fillPercentage = getStepFillPercentage(index, progress);
+          const fillPercentage = getStepFillPercentage(progress);
           
           return (
             <motion.div
               key={step.id}
               className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden"
-              style={{ zIndex: step.id * 10 }} // Ensure stacking order: 10, 20, 30, 40
+              style={{ zIndex: step.id * 10 }}
             >
               {/* Image Background Layer */}
               <motion.div
@@ -172,9 +165,9 @@ export function Preloader({ onComplete }: PreloaderProps) {
                     src={step.image}
                     alt={step.text}
                     className="w-full h-full object-cover"
+                    loading="eager"
                   />
-                  {/* Overlay for text readability */}
-                  <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]" />
+                  <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]" />
                 </div>
               </motion.div>
 
@@ -194,6 +187,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
                       backgroundImage: `linear-gradient(to top, white ${fillPercentage}, transparent ${fillPercentage})`,
                       WebkitBackgroundClip: "text",
                       backgroundClip: "text",
+                      backgroundSize: "100% 100%",
                     } as any}
                   >
                     {step.text}
