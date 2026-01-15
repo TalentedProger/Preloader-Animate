@@ -87,10 +87,10 @@ export function Preloader({ onComplete }: PreloaderProps) {
   const textVariants = {
     initial: (direction: string) => {
       switch (direction) {
-        case "left": return { x: -100, opacity: 0 };
-        case "right": return { x: 100, opacity: 0 };
-        case "top": return { y: -100, opacity: 0 };
-        case "bottom": return { y: 100, opacity: 0 };
+        case "left": return { x: "-100vw", opacity: 0 };
+        case "right": return { x: "100vw", opacity: 0 };
+        case "top": return { y: "-100vh", opacity: 0 };
+        case "bottom": return { y: "100vh", opacity: 0 };
         default: return { opacity: 0 };
       }
     },
@@ -99,15 +99,25 @@ export function Preloader({ onComplete }: PreloaderProps) {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 1.2,
+        duration: 1.5,
         ease: [0.22, 1, 0.36, 1],
-        delay: 0.1, // Slight delay for text after image starts
+        delay: 0.2, // Let the image start first
       },
     },
     exit: {
       opacity: 0,
       scale: 1.1,
       transition: { duration: 0.5 }
+    }
+  };
+
+  const getFillPercentage = (id: number) => {
+    switch (id) {
+      case 1: return "25%";
+      case 2: return "50%";
+      case 3: return "75%";
+      case 4: return "100%";
+      default: return "0%";
     }
   };
 
@@ -119,6 +129,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
           if (index > currentStep) return null;
 
           const isCurrent = index === currentStep;
+          const fillPercentage = getFillPercentage(step.id);
           
           return (
             <motion.div
@@ -147,16 +158,25 @@ export function Preloader({ onComplete }: PreloaderProps) {
 
               {/* Text Layer - Centered */}
               {isCurrent && (
-                <motion.h1
-                  className="relative z-20 font-display font-black text-5xl md:text-7xl lg:text-9xl tracking-tighter text-glass-outline uppercase text-center px-4"
+                <motion.div
+                  className="relative z-20 flex flex-col items-center justify-center"
                   custom={step.direction}
                   variants={textVariants}
                   initial="initial"
                   animate="animate"
                   exit="exit"
                 >
-                  {step.text}
-                </motion.h1>
+                  <h1 
+                    className="font-display font-black text-6xl md:text-8xl lg:text-[12rem] tracking-tighter uppercase text-center px-4 text-glass-outline relative"
+                    style={{
+                      backgroundImage: `linear-gradient(to top, white ${fillPercentage}, transparent ${fillPercentage})`,
+                      WebkitBackgroundClip: "text",
+                      backgroundClip: "text",
+                    } as any}
+                  >
+                    {step.text}
+                  </h1>
+                </motion.div>
               )}
             </motion.div>
           );
