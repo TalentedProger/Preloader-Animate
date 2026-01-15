@@ -85,7 +85,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.8,
+        duration: 1.2,
         ease: [0.16, 1, 0.3, 1],
       },
     },
@@ -107,7 +107,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.8,
+        duration: 1.2,
         ease: [0.16, 1, 0.3, 1],
       },
     },
@@ -130,9 +130,8 @@ export function Preloader({ onComplete }: PreloaderProps) {
 
       <AnimatePresence mode="popLayout">
         {steps.map((step, index) => {
-          if (index > currentStep) return null;
+          if (index !== currentStep) return null;
 
-          const isCurrent = index === currentStep;
           const fillPercentage = getStepFillPercentage(progress);
           
           return (
@@ -158,29 +157,27 @@ export function Preloader({ onComplete }: PreloaderProps) {
                 </div>
               </motion.div>
 
-              {isCurrent && (
-                <motion.div
-                  className="relative z-20 flex flex-col items-center justify-center"
-                  custom={step.direction}
-                  variants={textVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
+              <motion.div
+                className="relative z-20 flex flex-col items-center justify-center"
+                custom={step.direction}
+                variants={textVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <h1 
+                  className="font-display font-black text-6xl md:text-8xl lg:text-[12rem] tracking-tighter uppercase text-center px-4 text-glass-outline relative"
+                  style={{
+                    backgroundImage: `linear-gradient(to top, white ${fillPercentage}, transparent ${fillPercentage})`,
+                    WebkitBackgroundClip: "text",
+                    backgroundClip: "text",
+                    backgroundSize: "100% 100%",
+                    backgroundPosition: "bottom",
+                  } as any}
                 >
-                  <h1 
-                    className="font-display font-black text-6xl md:text-8xl lg:text-[12rem] tracking-tighter uppercase text-center px-4 text-glass-outline relative"
-                    style={{
-                      backgroundImage: `linear-gradient(to top, white ${fillPercentage}, transparent ${fillPercentage})`,
-                      WebkitBackgroundClip: "text",
-                      backgroundClip: "text",
-                      backgroundSize: "100% 100%",
-                      backgroundPosition: "bottom",
-                    } as any}
-                  >
-                    {step.text}
-                  </h1>
-                </motion.div>
-              )}
+                  {step.text}
+                </h1>
+              </motion.div>
             </motion.div>
           );
         })}
