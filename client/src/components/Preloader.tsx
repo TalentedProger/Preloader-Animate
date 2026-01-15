@@ -40,20 +40,38 @@ interface PreloaderProps {
 
 export function Preloader({ onComplete }: PreloaderProps) {
   const [currentStep, setCurrentStep] = useState(0);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Sequence timing
-    const timers = [
-      setTimeout(() => setCurrentStep(1), 1800), // Step 1 to 2
-      setTimeout(() => setCurrentStep(2), 3600), // Step 2 to 3
-      setTimeout(() => setCurrentStep(3), 5400), // Step 3 to 4
-      setTimeout(() => {
-        // End of sequence
-        onComplete();
-      }, 7500),
-    ];
+    // We want the progress to be 0-100 over the course of the whole animation
+    // Sequence timing: 1.8s, 3.6s, 5.4s, 7.5s
+    // Total duration: 7500ms
+    const totalDuration = 7500;
+    const startTime = Date.now();
 
-    return () => timers.forEach(clearTimeout);
+    const progressInterval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const newProgress = Math.min(Math.floor((elapsed / totalDuration) * 100), 100);
+      setProgress(newProgress);
+
+      // Determine step based on progress
+      if (newProgress >= 75) {
+        setCurrentStep(3);
+      } else if (newProgress >= 50) {
+        setCurrentStep(2);
+      } else if (newProgress >= 25) {
+        setCurrentStep(1);
+      } else {
+        setCurrentStep(0);
+      }
+
+      if (elapsed >= totalDuration) {
+        clearInterval(progressInterval);
+        onComplete();
+      }
+    }, 16); // ~60fps
+
+    return () => clearInterval(progressInterval);
   }, [onComplete]);
 
   // Variants for image sliding
@@ -109,14 +127,17 @@ export function Preloader({ onComplete }: PreloaderProps) {
     }
   };
 
-  const getFillPercentage = (id: number) => {
-    switch (id) {
-      case 1: return "25%";
-      case 2: return "50%";
-      case 3: return "75%";
-      case 4: return "100%";
-      default: return "0%";
-    }
+  // Calculate fill percentage relative to the current step's 25% window
+  const getStepFillPercentage = (stepIndex: number, totalProgress: number) => {
+    const stepStart = stepIndex * 25;
+    const stepEnd = (stepIndex + 1) * 25;
+    
+    if (totalProgress < stepStart) return "0%";
+    if (totalProgress >= stepEnd) return "100%";
+    
+    // Normalize progress within the 25% window
+    const relativeProgress = ((totalProgress - stepStart) / 25) * 100;
+    return `${relativeProgress}%`;
   };
 
   return (
@@ -125,13 +146,14 @@ export function Preloader({ onComplete }: PreloaderProps) {
       <div className="hidden">
         {steps.map(s => <img key={s.id} src={s.image} />)}
       </div>
+
       <AnimatePresence mode="popLayout">
         {steps.map((step, index) => {
           // Only render steps that are active (current or past)
           if (index > currentStep) return null;
 
           const isCurrent = index === currentStep;
-          const fillPercentage = getFillPercentage(step.id);
+          const fillPercentage = getStepFillPercentage(index, progress);
           
           return (
             <motion.div
@@ -184,6 +206,11 @@ export function Preloader({ onComplete }: PreloaderProps) {
           );
         })}
       </AnimatePresence>
+
+      {/* Dynamic Counter in Bottom Right */}
+      <div className="absolute bottom-10 right-10 z-[100] font-display font-bold text-4xl md:text-6xl text-white opacity-50 tabular-nums">
+        {progress}%
+      </div>
     </div>
   );
 }
