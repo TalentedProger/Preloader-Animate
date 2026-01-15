@@ -127,17 +127,15 @@ export function Preloader({ onComplete }: PreloaderProps) {
     }
   };
 
-  // Calculate fill percentage relative to the current step's 25% window
+  // Calculate fill percentage for each word
+  // First word fills 0% -> 25%
+  // Second word fills 25% -> 50%
+  // Third word fills 50% -> 75%
+  // Fourth word fills 75% -> 100%
   const getStepFillPercentage = (stepIndex: number, totalProgress: number) => {
-    const stepStart = stepIndex * 25;
-    const stepEnd = (stepIndex + 1) * 25;
-    
-    if (totalProgress < stepStart) return "0%";
-    if (totalProgress >= stepEnd) return "100%";
-    
-    // Normalize progress within the 25% window
-    const relativeProgress = ((totalProgress - stepStart) / 25) * 100;
-    return `${relativeProgress}%`;
+    // We want the word to reflect the TOTAL progress of the site
+    // so it doesn't reset to 0% for each word.
+    return `${totalProgress}%`;
   };
 
   return (
@@ -208,7 +206,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
       </AnimatePresence>
 
       {/* Dynamic Counter in Bottom Right */}
-      <div className="absolute bottom-10 right-10 z-[100] font-display font-bold text-4xl md:text-6xl text-white opacity-50 tabular-nums">
+      <div className="absolute bottom-10 right-10 z-[100] font-display font-black text-6xl md:text-9xl text-glass-outline tabular-nums opacity-80">
         {progress}%
       </div>
     </div>
