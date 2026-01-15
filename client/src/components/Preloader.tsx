@@ -43,18 +43,14 @@ export function Preloader({ onComplete }: PreloaderProps) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // We want the progress to be 0-100 over the course of the whole animation
-    // Sequence timing: 1.8s, 3.6s, 5.4s, 7.5s
-    // Total duration: 7500ms
     const totalDuration = 7500;
     const startTime = Date.now();
 
     const progressInterval = setInterval(() => {
       const elapsed = Date.now() - startTime;
-      const newProgress = Math.min(Math.floor((elapsed / totalDuration) * 100), 100);
+      const newProgress = Math.min((elapsed / totalDuration) * 100, 100);
       setProgress(newProgress);
 
-      // Determine step based on progress: 0-25, 25-50, 50-75, 75-100
       if (newProgress >= 75) {
         setCurrentStep(3);
       } else if (newProgress >= 50) {
@@ -69,12 +65,11 @@ export function Preloader({ onComplete }: PreloaderProps) {
         clearInterval(progressInterval);
         onComplete();
       }
-    }, 10); // Higher frequency for smoother tracking
+    }, 10);
 
     return () => clearInterval(progressInterval);
   }, [onComplete]);
 
-  // Variants for image sliding
   const imageVariants = {
     initial: (direction: string) => {
       switch (direction) {
@@ -90,16 +85,13 @@ export function Preloader({ onComplete }: PreloaderProps) {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.6, // Faster entrance to avoid delay perception
-        ease: "easeOut",
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1],
       },
     },
-    exit: {
-        opacity: 0 
-    }
+    exit: { opacity: 0 }
   };
 
-  // Variants for text sliding (matching the image direction)
   const textVariants = {
     initial: (direction: string) => {
       switch (direction) {
@@ -115,8 +107,8 @@ export function Preloader({ onComplete }: PreloaderProps) {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.6, // Faster entrance
-        ease: "easeOut",
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1],
       },
     },
     exit: {
@@ -126,21 +118,18 @@ export function Preloader({ onComplete }: PreloaderProps) {
     }
   };
 
-  // Calculate fill percentage for each word
   const getStepFillPercentage = (totalProgress: number) => {
     return `${totalProgress}%`;
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-black text-white">
-      {/* Preload images hidden */}
       <div className="hidden">
         {steps.map(s => <img key={s.id} src={s.image} />)}
       </div>
 
-      <AnimatePresence mode="popLayout" initial={false}>
+      <AnimatePresence mode="popLayout">
         {steps.map((step, index) => {
-          // Only render steps that are active (current or past)
           if (index > currentStep) return null;
 
           const isCurrent = index === currentStep;
@@ -152,7 +141,6 @@ export function Preloader({ onComplete }: PreloaderProps) {
               className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden"
               style={{ zIndex: step.id * 10 }}
             >
-              {/* Image Background Layer */}
               <motion.div
                 className="absolute inset-0 w-full h-full"
                 custom={step.direction}
@@ -165,13 +153,11 @@ export function Preloader({ onComplete }: PreloaderProps) {
                     src={step.image}
                     alt={step.text}
                     className="w-full h-full object-cover"
-                    loading="eager"
                   />
                   <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]" />
                 </div>
               </motion.div>
 
-              {/* Text Layer - Centered */}
               {isCurrent && (
                 <motion.div
                   className="relative z-20 flex flex-col items-center justify-center"
@@ -188,6 +174,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
                       WebkitBackgroundClip: "text",
                       backgroundClip: "text",
                       backgroundSize: "100% 100%",
+                      backgroundPosition: "bottom",
                     } as any}
                   >
                     {step.text}
@@ -199,9 +186,8 @@ export function Preloader({ onComplete }: PreloaderProps) {
         })}
       </AnimatePresence>
 
-      {/* Dynamic Counter in Bottom Right */}
       <div className="absolute bottom-10 right-10 z-[100] font-display font-black text-6xl md:text-9xl text-glass-outline tabular-nums opacity-80">
-        {progress}%
+        {Math.round(progress)}%
       </div>
     </div>
   );
