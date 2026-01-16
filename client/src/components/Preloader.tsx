@@ -130,8 +130,9 @@ export function Preloader({ onComplete }: PreloaderProps) {
 
       <AnimatePresence mode="popLayout">
         {steps.map((step, index) => {
-          if (index !== currentStep) return null;
+          if (index > currentStep) return null;
 
+          const isCurrent = index === currentStep;
           const fillPercentage = getStepFillPercentage(progress);
           
           return (
@@ -157,27 +158,29 @@ export function Preloader({ onComplete }: PreloaderProps) {
                 </div>
               </motion.div>
 
-              <motion.div
-                className="relative z-20 flex flex-col items-center justify-center"
-                custom={step.direction}
-                variants={textVariants}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-              >
-                <h1 
-                  className="font-display font-black text-6xl md:text-8xl lg:text-[12rem] tracking-tighter uppercase text-center px-4 text-glass-outline relative"
-                  style={{
-                    backgroundImage: `linear-gradient(to top, white ${fillPercentage}, transparent ${fillPercentage})`,
-                    WebkitBackgroundClip: "text",
-                    backgroundClip: "text",
-                    backgroundSize: "100% 100%",
-                    backgroundPosition: "bottom",
-                  } as any}
+              {isCurrent && (
+                <motion.div
+                  className="relative z-20 flex flex-col items-center justify-center"
+                  custom={step.direction}
+                  variants={textVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
                 >
-                  {step.text}
-                </h1>
-              </motion.div>
+                  <h1 
+                    className="font-display font-black text-6xl md:text-8xl lg:text-[12rem] tracking-tighter uppercase text-center px-4 text-glass-outline relative"
+                    style={{
+                      backgroundImage: `linear-gradient(to top, white ${fillPercentage}, transparent ${fillPercentage})`,
+                      WebkitBackgroundClip: "text",
+                      backgroundClip: "text",
+                      backgroundSize: "100% 100%",
+                      backgroundPosition: "bottom",
+                    } as any}
+                  >
+                    {step.text}
+                  </h1>
+                </motion.div>
+              )}
             </motion.div>
           );
         })}
