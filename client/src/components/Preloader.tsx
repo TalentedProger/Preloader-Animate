@@ -118,8 +118,15 @@ export function Preloader({ onComplete }: PreloaderProps) {
     }
   };
 
-  const getStepFillPercentage = (totalProgress: number) => {
-    return `${totalProgress}%`;
+  const getStepFillPercentage = (index: number, totalProgress: number) => {
+    const stepStart = index * 25;
+    const stepEnd = (index + 1) * 25;
+    
+    if (totalProgress <= stepStart) return "0%";
+    if (totalProgress >= stepEnd) return "100%";
+    
+    const relativeProgress = ((totalProgress - stepStart) / 25) * 100;
+    return `${relativeProgress}%`;
   };
 
   return (
@@ -128,62 +135,54 @@ export function Preloader({ onComplete }: PreloaderProps) {
         {steps.map(s => <img key={s.id} src={s.image} />)}
       </div>
 
-      <AnimatePresence mode="popLayout">
-        {steps.map((step, index) => {
-          if (index > currentStep) return null;
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={steps[currentStep].id}
+          className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden"
+        >
+          <motion.div
+            className="absolute inset-0 w-full h-full"
+            custom={steps[currentStep].direction}
+            variants={imageVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
+            <div className="relative w-full h-full overflow-hidden">
+              <motion.img
+                src={steps[currentStep].image}
+                alt={steps[currentStep].text}
+                className="w-full h-full object-cover"
+                initial={{ scale: 1.2 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 2.5, ease: "easeOut" }}
+              />
+              <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px]" />
+            </div>
+          </motion.div>
 
-          const isCurrent = index === currentStep;
-          const fillPercentage = getStepFillPercentage(progress);
-          
-          return (
-            <motion.div
-              key={step.id}
-              className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden"
-              style={{ zIndex: step.id * 10 }}
+          <motion.div
+            className="relative z-20 flex flex-col items-center justify-center"
+            custom={steps[currentStep].direction}
+            variants={textVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
+            <h1 
+              className="font-display font-black text-6xl md:text-8xl lg:text-[12rem] tracking-tighter uppercase text-center px-4 text-glass-outline relative"
+              style={{
+                backgroundImage: `linear-gradient(to top, white ${getStepFillPercentage(currentStep, progress)}, transparent ${getStepFillPercentage(currentStep, progress)})`,
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                backgroundSize: "100% 100%",
+                backgroundPosition: "bottom",
+              } as any}
             >
-              <motion.div
-                className="absolute inset-0 w-full h-full"
-                custom={step.direction}
-                variants={imageVariants}
-                initial="initial"
-                animate="animate"
-              >
-                <div className="relative w-full h-full">
-                  <img
-                    src={step.image}
-                    alt={step.text}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]" />
-                </div>
-              </motion.div>
-
-              {isCurrent && (
-                <motion.div
-                  className="relative z-20 flex flex-col items-center justify-center"
-                  custom={step.direction}
-                  variants={textVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
-                  <h1 
-                    className="font-display font-black text-6xl md:text-8xl lg:text-[12rem] tracking-tighter uppercase text-center px-4 text-glass-outline relative"
-                    style={{
-                      backgroundImage: `linear-gradient(to top, white ${fillPercentage}, transparent ${fillPercentage})`,
-                      WebkitBackgroundClip: "text",
-                      backgroundClip: "text",
-                      backgroundSize: "100% 100%",
-                      backgroundPosition: "bottom",
-                    } as any}
-                  >
-                    {step.text}
-                  </h1>
-                </motion.div>
-              )}
-            </motion.div>
-          );
-        })}
+              {steps[currentStep].text}
+            </h1>
+          </motion.div>
+        </motion.div>
       </AnimatePresence>
 
       <div className="absolute bottom-10 right-10 z-[100] font-display font-black text-6xl md:text-9xl text-glass-outline tabular-nums opacity-80">
