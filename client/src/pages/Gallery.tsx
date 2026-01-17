@@ -152,9 +152,7 @@ export default function Gallery() {
         </div>
       </section>
 
-          <Footer />
-        </div>
-      </section>
+      <Footer />
     </div>
   );
 }
