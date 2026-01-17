@@ -32,4 +32,29 @@
       -webkit-text-stroke: 1px white;
     }
   }
+
+  /* Hero image optimization - prevent layout shift and ensure proper sizing */
+  .hero-image-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .hero-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 45%;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+
+  /* Prevent image loading flash */
+  img[loading="eager"] {
+    content-visibility: auto;
+  }
 }
