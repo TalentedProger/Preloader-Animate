@@ -2,10 +2,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 
 // Import images from assets as requested
-import imgExplore from "@assets/image_1768503551264.png";
-import imgExperience from "@assets/image_1768503607623.png";
-import imgComfort from "@assets/image_1768503721085.png";
-import imgConfidence from "@assets/image_1768503794711.png";
+import imgExplore from "@assets/preloader_image-1.png";
+import imgExperience from "@assets/preloader_image-2.png";
+import imgComfort from "@assets/preloader_image-3.png";
+import imgConfidence from "@assets/preloader_image-4.png";
 
 const steps = [
   {
@@ -43,7 +43,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const totalDuration = 7500;
+    const totalDuration = 3750;
     const startTime = Date.now();
 
     const progressInterval = setInterval(() => {
@@ -73,10 +73,10 @@ export function Preloader({ onComplete }: PreloaderProps) {
   const imageVariants = {
     initial: (direction: string) => {
       switch (direction) {
-        case "left": return { x: "-100%", y: 0 };
-        case "right": return { x: "100%", y: 0 };
-        case "top": return { x: 0, y: "-100%" };
-        case "bottom": return { x: 0, y: "100%" };
+        case "left": return { x: "-100%", y: 0, opacity: 1 };
+        case "right": return { x: "100%", y: 0, opacity: 1 };
+        case "top": return { x: 0, y: "-100%", opacity: 1 };
+        case "bottom": return { x: 0, y: "100%", opacity: 1 };
         default: return { opacity: 0 };
       }
     },
@@ -89,7 +89,10 @@ export function Preloader({ onComplete }: PreloaderProps) {
         ease: [0.16, 1, 0.3, 1],
       },
     },
-    exit: { opacity: 0 }
+    exit: { 
+      opacity: 0,
+      transition: { duration: 0.6 }
+    }
   };
 
   const textVariants = {
@@ -132,10 +135,13 @@ export function Preloader({ onComplete }: PreloaderProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-black text-white">
       <div className="hidden">
-        {steps.map(s => <img key={s.id} src={s.image} />)}
+        {steps.map(s => <img key={s.id} src={s.image} alt="" />)}
       </div>
 
-      <AnimatePresence mode="wait">
+      {/* Background layer - stays constant */}
+      <div className="absolute inset-0 z-0 bg-black" />
+
+      <AnimatePresence>
         <motion.div
           key={steps[currentStep].id}
           className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden"
@@ -185,7 +191,9 @@ export function Preloader({ onComplete }: PreloaderProps) {
         </motion.div>
       </AnimatePresence>
 
-      <div className="absolute bottom-10 right-10 z-[100] font-display font-black text-6xl md:text-9xl text-glass-outline tabular-nums opacity-80">
+      <div 
+        className="absolute bottom-10 right-10 z-[100] font-display font-black text-6xl md:text-9xl text-glass-outline tabular-nums opacity-80"
+      >
         {Math.round(progress)}%
       </div>
     </div>

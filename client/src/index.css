@@ -1,61 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;900&family=Space+Grotesk:wght@300;500;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --font-display: 'Outfit', sans-serif;
-  --font-body: 'Space Grotesk', sans-serif;
-
-  /* Cinematic Dark Theme Palette */
-  --background: 240 10% 4%;
-  --foreground: 0 0% 98%;
-
-  --primary: 0 0% 98%;
-  --primary-foreground: 240 10% 4%;
-
-  --secondary: 240 4% 16%;
-  --secondary-foreground: 0 0% 98%;
-
-  --muted: 240 4% 16%;
-  --muted-foreground: 240 5% 65%;
-
-  --accent: 0 0% 98%;
-  --accent-foreground: 240 10% 4%;
-
-  --destructive: 0 63% 31%;
-  --destructive-foreground: 0 0% 98%;
-
-  --border: 240 4% 16%;
-  --input: 240 4% 16%;
-  --ring: 240 5% 84%;
-
-  --radius: 0.5rem;
-}
-
 @layer base {
   body {
-    @apply bg-background text-foreground antialiased selection:bg-white/20 selection:text-white;
-    font-family: var(--font-body);
+    background-color: #000;
+    color: #fff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display);
+  body::selection {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
   }
+
 }
 
 @layer utilities {
-  /* The "Glass" text effect requested */
+  /* Glass text effect for preloader */
   .text-glass-outline {
-    color: rgba(0, 0, 0, 0.2); /* Slightly dark transparent fill */
+    color: rgba(0, 0, 0, 0.2);
     -webkit-text-stroke: 2px white;
     text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     background-size: 100% 100%;
     background-repeat: no-repeat;
   }
 
-  /* For smaller screens, reduce stroke width */
   @media (max-width: 640px) {
     .text-glass-outline {
       -webkit-text-stroke: 1px white;
