@@ -87,23 +87,28 @@ const galleryItems = [
 const carouselImages = [stock1, stock2, stock3, stockMaldives, stockAlps, stockDesert, stockParis, stockNordic];
 
 export default function Gallery() {
-  const [isPaused, setIsPaused] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
   const controls = useAnimationControls();
 
   useEffect(() => {
-    if (true) {
-      controls.start({
-        rotate: [0, 360],
-        transition: {
-          duration: 40,
-          repeat: Infinity,
-          ease: "linear",
-        },
-      });
-    } else {
-      controls.stop();
-    }
-  }, [controls]); // Removed isPaused dependency to prevent stopping
+    // Sequential hover imitation effect
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % (carouselImages.length * 3));
+    }, 2000); // Change active card every 2 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    controls.start({
+      x: [0, -2500],
+      transition: {
+        duration: 40,
+        repeat: Infinity,
+        ease: "linear",
+      },
+    });
+  }, [controls]);
 
   return (
     <div className="min-h-screen bg-black text-white font-sans">
@@ -179,8 +184,8 @@ export default function Gallery() {
             ))}
           </div>
 
-          {/* Follow our visual journey - Circular Carousel Upgrade */}
-          <div className="mt-48 relative min-h-[800px] flex flex-col items-center justify-center overflow-hidden">
+          {/* Follow our visual journey - Marquee Slider with Sequential Hover */}
+          <div className="mt-48 relative min-h-[600px] flex flex-col items-center justify-center overflow-hidden">
             <div className="relative z-10 text-center space-y-8 mb-20">
               <motion.div
                 initial={{ opacity: 0 }}
@@ -203,46 +208,50 @@ export default function Gallery() {
               </Button>
             </div>
 
-            {/* Marquee Slider with 3D Perspective */}
-            <div className="mt-24 relative w-screen left-1/2 -translate-x-1/2 overflow-hidden py-20 perspective-[2000px]">
+            {/* Marquee Slider with 3D Perspective and Sequential Hover */}
+            <div className="relative w-screen left-1/2 -translate-x-1/2 overflow-hidden py-20 perspective-[2000px]">
               <motion.div
                 className="flex gap-12 whitespace-nowrap px-12"
-                animate={{
-                  x: [0, -2500], // Adjust based on content width
-                }}
-                transition={{
-                  duration: 40,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
+                animate={controls}
                 style={{ transformStyle: "preserve-3d" }}
               >
-                {[...carouselImages, ...carouselImages, ...carouselImages].map((img, i) => (
-                  <motion.div
-                    key={i}
-                    className="w-72 aspect-[3/4] flex-shrink-0 rounded-[2rem] overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md shadow-2xl group cursor-pointer relative"
-                    style={{
-                      transformStyle: "preserve-3d",
-                      rotateY: -15, // Constant perspective angle
-                    }}
-                    whileHover={{ 
-                      rotateY: 0, 
-                      scale: 1.1,
-                      z: 100,
-                      transition: { duration: 0.4, ease: "easeOut" }
-                    }}
-                  >
-                    <img 
-                      src={img} 
-                      loading="lazy"
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
-                      alt={`Visual journey ${i}`} 
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                      <Instagram className="w-8 h-8 text-white/80" />
-                    </div>
-                  </motion.div>
-                ))}
+                {[...carouselImages, ...carouselImages, ...carouselImages].map((img, i) => {
+                  const isCurrentlyActive = activeIndex === i;
+
+                  return (
+                    <motion.div
+                      key={i}
+                      className="w-72 aspect-[3/4] flex-shrink-0 rounded-[2rem] overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md shadow-2xl group cursor-pointer relative"
+                      animate={{
+                        rotateY: isCurrentlyActive ? 0 : -15,
+                        scale: isCurrentlyActive ? 1.1 : 1,
+                        z: isCurrentlyActive ? 100 : 0,
+                        filter: isCurrentlyActive ? "grayscale(0%)" : "grayscale(100%)",
+                      }}
+                      whileHover={{ 
+                        rotateY: 0, 
+                        scale: 1.15,
+                        z: 150,
+                        filter: "grayscale(0%)",
+                        transition: { duration: 0.4, ease: "easeOut" }
+                      }}
+                      transition={{ duration: 0.6, ease: "easeInOut" }}
+                      style={{
+                        transformStyle: "preserve-3d",
+                      }}
+                    >
+                      <img 
+                        src={img} 
+                        loading="lazy"
+                        className="w-full h-full object-cover" 
+                        alt={`Visual journey ${i}`} 
+                      />
+                      <div className={`absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-center justify-center transition-opacity duration-500 ${isCurrentlyActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+                        <Instagram className="w-8 h-8 text-white/80" />
+                      </div>
+                    </motion.div>
+                  );
+                })}
               </motion.div>
               
               {/* Fade edges */}
