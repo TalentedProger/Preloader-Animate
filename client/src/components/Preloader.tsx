@@ -132,6 +132,17 @@ export function Preloader({ onComplete }: PreloaderProps) {
     return `${relativeProgress}%`;
   };
 
+  // Get gradient direction based on slide direction
+  const getGradientDirection = (direction: string) => {
+    switch (direction) {
+      case "left":   return "to right";   // 1: заполнение слева направо
+      case "bottom": return "to top";     // 2: заполнение снизу вверх
+      case "right":  return "to left";    // 3: заполнение справа налево
+      case "top":    return "to bottom";  // 4: заполнение сверху вниз
+      default:       return "to top";
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-black text-white">
       <div className="hidden">
@@ -178,11 +189,11 @@ export function Preloader({ onComplete }: PreloaderProps) {
             <h1 
               className="font-display font-black text-6xl md:text-8xl lg:text-[12rem] tracking-tighter uppercase text-center px-4 text-glass-outline relative"
               style={{
-                backgroundImage: `linear-gradient(to top, white ${getStepFillPercentage(currentStep, progress)}, transparent ${getStepFillPercentage(currentStep, progress)})`,
+                fontFamily: "Montserrat, sans-serif",
+                backgroundImage: `linear-gradient(${getGradientDirection(steps[currentStep].direction)}, white ${getStepFillPercentage(currentStep, progress)}, transparent ${getStepFillPercentage(currentStep, progress)})`,
                 WebkitBackgroundClip: "text",
                 backgroundClip: "text",
                 backgroundSize: "100% 100%",
-                backgroundPosition: "bottom",
               } as any}
             >
               {steps[currentStep].text}
@@ -193,6 +204,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
 
       <div 
         className="absolute bottom-10 right-10 z-[100] font-display font-black text-6xl md:text-9xl text-glass-outline tabular-nums opacity-80"
+        style={{ fontFamily: "Montserrat, sans-serif" }}
       >
         {Math.round(progress)}%
       </div>
