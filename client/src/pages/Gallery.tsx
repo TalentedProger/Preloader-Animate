@@ -159,29 +159,13 @@ export default function Gallery() {
 
           {/* Follow our visual journey - Aesthetic Upgrade */}
           <div className="mt-48 relative">
-            <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none">
-              <h2 className="text-[20vw] font-display font-black tracking-tighter whitespace-nowrap">INSTAGRAM</h2>
+            <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none overflow-hidden">
+              <h2 className="text-[25vw] font-display font-black tracking-tighter whitespace-nowrap text-white/5 uppercase select-none">
+                Instagram
+              </h2>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative z-10">
-              {[stock1, stock2, stock3].map((img, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.2, duration: 1 }}
-                  viewport={{ once: true }}
-                  className="aspect-square relative group overflow-hidden bg-white/5"
-                >
-                  <img src={img} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" alt={`Visual journey ${i}`} />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                    <Instagram className="w-8 h-8 text-white/60" />
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            <div className="mt-20 text-center relative z-10 space-y-8">
+            <div className="relative z-10 text-center space-y-8 mb-20">
               <motion.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
@@ -195,12 +179,50 @@ export default function Gallery() {
               
               <div className="space-y-4">
                 <p className="text-white/40 uppercase tracking-[0.4em] text-xs font-bold">The Continuous Narrative</p>
-                <h3 className="text-4xl md:text-5xl font-display font-black tracking-tight">FOLLOW OUR PERSPECTIVE</h3>
+                <h3 className="text-4xl md:text-6xl font-display font-black tracking-tight">FOLLOW OUR PERSPECTIVE</h3>
               </div>
               
-              <Button variant="outline" className="h-20 px-12 rounded-none border-white/10 text-white hover:bg-white hover:text-black font-bold tracking-[0.3em] transition-all text-sm">
+              <Button variant="outline" className="h-16 px-12 rounded-none border-white/10 text-white hover:bg-white hover:text-black font-bold tracking-[0.3em] transition-all text-sm">
                 @LUXETRAVEL
               </Button>
+            </div>
+
+            <div className="relative z-10 flex justify-center items-end gap-0 h-[500px] overflow-visible pb-10">
+              {[stock1, stock2, stock3, stockMaldives, stockAlps].map((img, i) => {
+                // Simplified "Carousel" effect based on cards reference
+                const rotations = [-15, -7, 0, 7, 15];
+                const translations = [-60, -30, 0, 30, 60];
+                const yOffsets = [40, 20, 0, 20, 40];
+                
+                return (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 100 }}
+                    whileInView={{ 
+                      opacity: 1, 
+                      y: yOffsets[i],
+                      rotate: rotations[i],
+                      x: translations[i]
+                    }}
+                    whileHover={{ 
+                      y: -20, 
+                      scale: 1.1, 
+                      zIndex: 50,
+                      rotate: 0,
+                      transition: { duration: 0.3 }
+                    }}
+                    transition={{ delay: i * 0.1, duration: 0.8, ease: "easeOut" }}
+                    viewport={{ once: true }}
+                    className="w-64 aspect-[3/4] relative group overflow-hidden bg-white/5 border border-white/10 shadow-2xl rounded-2xl -ml-20 first:ml-0 cursor-pointer backdrop-blur-sm"
+                    style={{ zIndex: i }}
+                  >
+                    <img src={img} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt={`Visual journey ${i}`} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                      <Instagram className="w-8 h-8 text-white/80" />
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </div>
