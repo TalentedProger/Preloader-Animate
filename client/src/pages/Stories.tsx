@@ -148,14 +148,52 @@ export default function Stories() {
         </div>
       </section>
 
-      {/* Newsletter - Minimal version */}
-      <section className="py-32 px-6 border-t border-white/5 bg-black">
-        <div className="max-w-2xl mx-auto text-center space-y-12">
-          <h3 className="text-4xl font-display font-bold">SHARE YOUR JOURNEY</h3>
-          <p className="text-white/60 font-light">Join our community of storytellers. Submit your travel experiences for a chance to be featured in our monthly journal.</p>
-          <Button className="h-14 px-10 rounded-none bg-white text-black hover:bg-white/90 font-bold tracking-[0.2em]">
-            BECOME A CONTRIBUTOR
-          </Button>
+      {/* Share Your Journey - Aesthetic Upgrade */}
+      <section className="relative py-40 px-6 overflow-hidden bg-[#050505]">
+        <div className="absolute inset-0 z-0 opacity-20">
+          <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&q=80')] bg-cover bg-center grayscale" />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent z-10" />
+        
+        <div className="max-w-7xl mx-auto relative z-20">
+          <div className="max-w-2xl space-y-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              <h2 className="text-xs uppercase tracking-[0.6em] text-white/40 font-bold">Community</h2>
+              <h3 className="text-5xl md:text-8xl font-display font-black leading-[0.85] tracking-tighter">
+                BECOME THE <br/>
+                <span className="text-glass-outline">NARRATOR</span>
+              </h3>
+            </motion.div>
+            
+            <p className="text-xl text-white/60 font-light leading-relaxed">
+              Every great journey deserves to be told. We are looking for authentic voices to share their most profound travel experiences with our global community of connoisseurs.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-6">
+              <Button className="h-20 px-12 rounded-none bg-white text-black hover:bg-white/90 font-bold tracking-[0.3em] text-sm">
+                SUBMIT YOUR STORY
+              </Button>
+              <Button variant="outline" className="h-20 px-12 rounded-none border-white/10 text-white hover:bg-white hover:text-black font-bold tracking-[0.3em] text-sm transition-all backdrop-blur-sm">
+                CONTRIBUTOR GUIDELINES
+              </Button>
+            </div>
+            
+            <div className="pt-12 flex items-center gap-8">
+              <div className="flex -space-x-4">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="w-12 h-12 rounded-full border-2 border-black bg-white/10 overflow-hidden">
+                    <img src={`https://i.pravatar.cc/100?u=${i}`} alt="Contributor" />
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs uppercase tracking-[0.2em] text-white/40">Joined by 200+ global storytellers</p>
+            </div>
+          </div>
         </div>
       </section>
 

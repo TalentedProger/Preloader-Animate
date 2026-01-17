@@ -1,9 +1,25 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { Award, Users, Globe, History, Shield, Star } from "lucide-react";
+import { Footer } from "@/components/Footer";
+
+import img1 from "@assets/stock_images/luxury_travel_destin_fb1d68db.jpg";
+import img2 from "@assets/stock_images/luxury_travel_destin_c835dd8b.jpg";
+import img3 from "@assets/stock_images/luxury_travel_destin_379bb3b7.jpg";
+import img4 from "@assets/stock_images/luxury_travel_destin_e6605b7c.jpg";
 
 export default function About() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, 100]);
+
   return (
     <div className="min-h-screen bg-black text-white font-sans">
       {/* Navigation */}
@@ -108,21 +124,57 @@ export default function About() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="relative z-20 bg-[#0a0a0a] text-white pt-24 pb-12 border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="pt-12 flex flex-col md:flex-row justify-between items-center gap-8">
-            <div className="text-[10px] uppercase tracking-[0.5em] text-white/20">
-              © 2026 LUXE TRAVEL CO. ALL RIGHTS RESERVED.
+      {/* Follow our visual journey */}
+      <section ref={containerRef} className="py-40 px-6 bg-black overflow-hidden relative">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+            <div className="space-y-8 relative z-10">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="space-y-4"
+              >
+                <h2 className="text-xs uppercase tracking-[0.6em] text-white/40 font-bold">The Perspective</h2>
+                <h3 className="text-5xl md:text-7xl font-display font-black leading-none">
+                  FOLLOW OUR <br/>
+                  <span className="text-glass-outline">JOURNEY</span>
+                </h3>
+              </motion.div>
+              <p className="text-xl text-white/60 font-light leading-relaxed max-w-md">
+                Experience the world through our lens. A continuous stream of inspiration from the most breathtaking corners of the earth.
+              </p>
+              <Button variant="outline" className="h-16 px-12 rounded-none border-white/10 text-white hover:bg-white hover:text-black font-bold tracking-[0.3em] transition-all">
+                @LUXETRAVEL
+              </Button>
             </div>
-            <div className="text-2xl font-display font-black tracking-tighter">LUXE.</div>
-            <div className="flex gap-8 text-[10px] uppercase tracking-[0.5em] text-white/20">
-              <a href="#" className="hover:text-white transition-colors">Privacy</a>
-              <a href="#" className="hover:text-white transition-colors">Terms</a>
+
+            <div className="relative grid grid-cols-2 gap-4 h-[600px]">
+              <motion.div style={{ y: y1 }} className="space-y-4">
+                <div className="aspect-[3/4] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
+                  <img src={img1} className="w-full h-full object-cover" alt="Journey 1" />
+                </div>
+                <div className="aspect-[3/4] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
+                  <img src={img2} className="w-full h-full object-cover" alt="Journey 2" />
+                </div>
+              </motion.div>
+              <motion.div style={{ y: y2 }} className="space-y-4 pt-20">
+                <div className="aspect-[3/4] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
+                  <img src={img3} className="w-full h-full object-cover" alt="Journey 3" />
+                </div>
+                <div className="aspect-[3/4] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
+                  <img src={img4} className="w-full h-full object-cover" alt="Journey 4" />
+                </div>
+              </motion.div>
             </div>
           </div>
         </div>
-      </footer>
+        
+        {/* Abstract background elements */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-white/[0.02] rounded-full blur-3xl pointer-events-none" />
+      </section>
+
+      <Footer />
     </div>
   );
 }
