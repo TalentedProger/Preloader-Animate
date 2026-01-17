@@ -66,16 +66,16 @@ export default function Home() {
         >
           {/* Background with slight zoom effect */}
           <motion.div 
-            className="absolute inset-0 z-0 overflow-hidden"
+            className="absolute inset-0 z-0"
             initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}
             transition={{ duration: 10, ease: "easeOut" }}
           >
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/20 z-10" />
+            <div className="absolute inset-0 bg-black/40 z-10" />
             <img 
               src={imgHero} 
               alt="Hero Background" 
-              className="w-full h-[120%] object-cover object-center opacity-70 translate-y-[-10%]"
+              className="w-full h-full object-cover opacity-80"
             />
           </motion.div>
 
