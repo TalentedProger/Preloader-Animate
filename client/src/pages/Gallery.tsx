@@ -91,7 +91,7 @@ export default function Gallery() {
   const controls = useAnimationControls();
 
   useEffect(() => {
-    if (!isPaused) {
+    if (true) {
       controls.start({
         rotate: [0, 360],
         transition: {
@@ -103,7 +103,7 @@ export default function Gallery() {
     } else {
       controls.stop();
     }
-  }, [isPaused, controls]);
+  }, [controls]); // Removed isPaused dependency to prevent stopping
 
   return (
     <div className="min-h-screen bg-black text-white font-sans">
@@ -203,33 +203,33 @@ export default function Gallery() {
               </Button>
             </div>
 
-            {/* Circular Carousel */}
+            {/* Semi-Circular Carousel */}
             <div 
-              className="relative w-full flex items-center justify-center mt-20"
-              onMouseEnter={() => setIsPaused(true)}
-              onMouseLeave={() => setIsPaused(false)}
+              className="relative w-[90vw] flex items-center justify-center mt-20 min-h-[500px]"
             >
               <motion.div
                 animate={controls}
-                className="relative w-[600px] h-[600px] flex items-center justify-center"
+                className="relative w-full h-full flex items-center justify-center"
               >
                 {carouselImages.map((img, i) => {
-                  const angle = (i / carouselImages.length) * (2 * Math.PI);
-                  const radius = 350; // Distance from center
-                  const x = Math.cos(angle) * radius;
-                  const y = Math.sin(angle) * radius;
+                  const angleStep = Math.PI / (carouselImages.length - 1);
+                  const angle = Math.PI + (i * angleStep);
+                  const radiusX = 600; // Wider radius for 90vw
+                  const radiusY = 300; // Semi-circle height
+                  const x = Math.cos(angle) * radiusX;
+                  const y = Math.sin(angle) * radiusY;
                   const rotationDegree = (angle * 180) / Math.PI + 90;
 
                   return (
                     <motion.div
                       key={i}
-                      className="absolute w-48 aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md shadow-2xl group cursor-pointer"
+                      className="absolute w-64 aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md shadow-2xl group cursor-pointer"
                       style={{
                         x,
                         y,
                         rotate: rotationDegree,
                       }}
-                      whileHover={{ scale: 1.1, zIndex: 50 }}
+                      whileHover={{ scale: 1.05, zIndex: 50 }}
                       transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     >
                       <img 
