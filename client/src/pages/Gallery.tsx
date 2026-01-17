@@ -45,6 +45,20 @@ const galleryItems = [
     image: "https://images.unsplash.com/photo-1514282401047-d78a73a6704a?auto=format&fit=crop&q=80",
     category: "Coastal",
     size: "small"
+  },
+  {
+    title: "Aurora peak",
+    location: "Lofoten, Norway",
+    image: "https://images.unsplash.com/photo-1579033390041-9958368c47a2?auto=format&fit=crop&q=80",
+    category: "Arctic",
+    size: "large"
+  },
+  {
+    title: "White Sands",
+    location: "Maldives",
+    image: "https://images.unsplash.com/photo-1506953823976-52e1bdc0149a?auto=format&fit=crop&q=80",
+    category: "Coastal",
+    size: "small"
   }
 ];
 

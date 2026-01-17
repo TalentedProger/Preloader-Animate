@@ -12,6 +12,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { ArrowRight, Loader2, Star, MapPin, Globe, Shield, Phone, Instagram, Facebook, Twitter, Youtube, Mail } from "lucide-react";
 import { SiVisa, SiMastercard, SiAmericanexpress } from "react-icons/si";
 import { Link } from "wouter";
+import { Footer } from "@/components/Footer";
 
 // Re-use last image for background continuity
 import imgHero from "@assets/image_1768503794711.png";
