@@ -8,7 +8,9 @@ import { insertSubscriberSchema, type InsertSubscriber } from "@shared/schema";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Loader2 } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { ArrowRight, Loader2, Star, MapPin, Globe, Shield, Phone, Instagram, Facebook, Twitter, Youtube, Mail } from "lucide-react";
+import { SiVisa, SiMastercard, SiAmericanexpress } from "react-icons/si";
 
 // Re-use last image for background continuity
 import imgHero from "@assets/image_1768503794711.png";
@@ -87,18 +89,18 @@ export default function Home() {
           </nav>
 
           {/* Hero Content */}
-          <main className="relative z-20 flex-grow flex flex-col items-center justify-center text-center px-4 md:px-6 mt-10 md:mt-0">
+          <main className="relative z-20 min-h-[90vh] flex flex-col items-center justify-center text-center px-4 md:px-6 py-20">
             <motion.div
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.8 }}
-              className="max-w-4xl mx-auto space-y-6"
+              className="max-w-4xl mx-auto space-y-8"
             >
               <h2 className="text-sm md:text-base uppercase tracking-[0.3em] text-white/60">
                 Redefine Your Journey
               </h2>
               
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-black tracking-tighter leading-[0.9]">
+              <h1 className="text-6xl md:text-8xl lg:text-9xl font-display font-black tracking-tighter leading-[0.85]">
                 <span className="block text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">
                   TRAVEL BEYOND
                 </span>
@@ -107,15 +109,15 @@ export default function Home() {
                 </span>
               </h1>
               
-              <p className="max-w-xl mx-auto text-lg text-white/70 leading-relaxed font-light">
+              <p className="max-w-xl mx-auto text-lg md:text-xl text-white/70 leading-relaxed font-light">
                 Discover the world's most breathtaking destinations with unparalelled comfort and style. Your adventure begins where the map ends.
               </p>
 
               {/* Newsletter Form */}
-              <div className="pt-8 w-full max-w-md mx-auto">
+              <div className="pt-12 w-full max-w-md mx-auto">
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-3">
-                    <div className="flex gap-2 relative">
+                    <div className="flex gap-0 relative group">
                       <FormField
                         control={form.control}
                         name="email"
@@ -125,7 +127,7 @@ export default function Home() {
                               <Input 
                                 placeholder="Enter your email for exclusive offers" 
                                 {...field} 
-                                className="bg-white/5 border-white/10 text-white placeholder:text-white/30 h-12 rounded-none focus:border-white/50 transition-colors backdrop-blur-sm"
+                                className="bg-white/5 border-white/10 text-white placeholder:text-white/30 h-14 rounded-none focus:border-white/40 transition-all backdrop-blur-md px-6 text-base border-r-0"
                               />
                             </FormControl>
                             <FormMessage />
@@ -135,12 +137,12 @@ export default function Home() {
                       <Button 
                         type="submit" 
                         disabled={createSubscriber.isPending}
-                        className="h-12 px-8 rounded-none bg-white text-black hover:bg-white/90 font-bold tracking-wide"
+                        className="h-14 px-8 rounded-none bg-white text-black hover:bg-white/90 font-bold tracking-wide transition-all active:scale-95"
                       >
                         {createSubscriber.isPending ? (
-                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <Loader2 className="w-5 h-5 animate-spin" />
                         ) : (
-                          <ArrowRight className="w-5 h-5" />
+                          <ArrowRight className="w-6 h-6" />
                         )}
                       </Button>
                     </div>
@@ -224,20 +226,204 @@ export default function Home() {
             </div>
           </section>
           
-          {/* Footer Stats */}
-          <footer className="relative z-20 w-full px-6 py-8 md:px-12 border-t border-white/10 mt-auto bg-black/40 backdrop-blur-md">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center md:text-left">
-              {[
-                { label: "Destinations", value: "140+" },
-                { label: "Travelers", value: "85k+" },
-                { label: "Experience", value: "20 Yrs" },
-                { label: "Rating", value: "4.9/5" },
-              ].map((stat, i) => (
-                <div key={i} className="flex flex-col">
-                  <span className="text-2xl md:text-3xl font-display font-bold">{stat.value}</span>
-                  <span className="text-xs uppercase tracking-widest text-white/50">{stat.label}</span>
+          {/* Reviews Section */}
+          <section className="relative z-20 py-32 px-6 md:px-12 bg-black overflow-hidden">
+            <div className="max-w-7xl mx-auto">
+              <div className="text-center mb-20 space-y-4">
+                <h2 className="text-xs uppercase tracking-[0.5em] text-white/40 font-bold">What Our Travelers Say</h2>
+                <h3 className="text-5xl md:text-7xl font-display font-black text-glass-outline">REVIEWS</h3>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {[
+                  { name: "Julianne Moore", role: "Vogue Editor", text: "The most seamless luxury experience I've ever had. Every detail was curated beyond perfection." },
+                  { name: "Marcus Chen", role: "Tech Entrepreneur", text: "LUXE redefined what I thought was possible in private travel. The desert mirage tour was life-changing." },
+                  { name: "Elena Rodriguez", role: "Architect", text: "As someone who appreciates design, the aesthetic of every location chosen was impeccable. Truly beyond the ordinary." }
+                ].map((review, i) => (
+                  <motion.div 
+                    key={i}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.2 }}
+                    viewport={{ once: true }}
+                    className="p-10 border border-white/5 bg-white/[0.02] backdrop-blur-sm flex flex-col justify-between aspect-square group hover:border-white/20 transition-all"
+                  >
+                    <div className="space-y-6">
+                      <div className="flex gap-1">
+                        {[...Array(5)].map((_, i) => <Star key={i} className="w-3 h-3 fill-white text-white" />)}
+                      </div>
+                      <p className="text-xl font-light leading-relaxed text-white/80 italic">"{review.text}"</p>
+                    </div>
+                    <div className="pt-8 border-t border-white/10">
+                      <h4 className="font-bold tracking-tight">{review.name}</h4>
+                      <p className="text-xs uppercase tracking-widest text-white/40">{review.role}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Pricing & Offers */}
+          <section className="relative z-20 py-32 px-6 md:px-12 bg-white text-black">
+            <div className="max-w-7xl mx-auto">
+              <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+                <div className="space-y-4">
+                  <h2 className="text-xs uppercase tracking-[0.5em] text-black/40 font-bold">Curated Packages</h2>
+                  <h3 className="text-5xl md:text-7xl font-display font-black leading-none">OFFERS</h3>
                 </div>
-              ))}
+                <p className="max-w-md text-black/60 font-light">All-inclusive luxury journeys tailored to your specific desires. Pricing includes private transport, concierge, and exclusive access.</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border border-black/10">
+                {[
+                  { title: "The Alpine Retreat", price: "$12,500", days: "7 Days", features: ["Private Chalet", "Heli-Skiing", "Michelin Dining"] },
+                  { title: "Coastal Elegance", price: "$18,900", days: "10 Days", features: ["Superyacht Access", "Private Villa", "Vintage Car Hire"] },
+                  { title: "Desert Sanctuary", price: "$14,200", days: "5 Days", features: ["Private Oasis", "Falconry", "Night Sky Dining"] }
+                ].map((offer, i) => (
+                  <div key={i} className="p-12 border-b md:border-b-0 md:border-r last:border-r-0 border-black/10 group hover:bg-black hover:text-white transition-all duration-500">
+                    <div className="space-y-8">
+                      <div className="flex justify-between items-start">
+                        <span className="text-xs uppercase tracking-[0.3em] font-bold opacity-40">{offer.days}</span>
+                        <ArrowRight className="w-5 h-5 -rotate-45 group-hover:rotate-0 transition-transform" />
+                      </div>
+                      <h4 className="text-3xl font-display font-bold leading-tight">{offer.title}</h4>
+                      <div className="space-y-2">
+                        {offer.features.map((f, j) => (
+                          <div key={j} className="flex items-center gap-2 text-sm opacity-60">
+                            <div className="w-1 h-1 bg-current rounded-full" /> {f}
+                          </div>
+                        ))}
+                      </div>
+                      <div className="pt-12 border-t border-black/10 group-hover:border-white/10 flex items-baseline gap-2">
+                        <span className="text-4xl font-display font-black">{offer.price}</span>
+                        <span className="text-xs uppercase tracking-widest opacity-40">/ person</span>
+                      </div>
+                      <Button className="w-full h-14 rounded-none bg-black text-white group-hover:bg-white group-hover:text-black transition-colors font-bold tracking-widest">
+                        INQUIRE NOW
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Map Section */}
+          <section className="relative z-20 h-[70vh] w-full bg-black overflow-hidden flex items-center justify-center">
+            <div className="absolute inset-0 opacity-40 grayscale pointer-events-none">
+              <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80')] bg-cover bg-center" />
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
+            <div className="relative z-30 text-center space-y-8 max-w-2xl px-6">
+              <motion.div 
+                initial={{ scale: 0.9, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                className="inline-flex items-center gap-2 px-6 py-2 border border-white/20 backdrop-blur-md rounded-full text-xs tracking-[0.3em] uppercase"
+              >
+                <MapPin className="w-3 h-3 text-white" /> Global Presence
+              </motion.div>
+              <h3 className="text-5xl md:text-7xl font-display font-black text-white leading-none">WE ARE EVERYWHERE</h3>
+              <p className="text-white/60 font-light text-lg">From the hidden valleys of Bhutan to the private islands of the Maldives. Our network spans across 140+ luxury destinations worldwide.</p>
+              <Button variant="outline" className="h-14 px-10 rounded-none border-white/20 text-white hover:bg-white hover:text-black font-bold tracking-[0.2em] transition-all">
+                EXPLORE MAP
+              </Button>
+            </div>
+          </section>
+
+          {/* FAQ Section */}
+          <section className="relative z-20 py-32 px-6 md:px-12 bg-black">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-20 space-y-4">
+                <h2 className="text-xs uppercase tracking-[0.5em] text-white/40 font-bold">Inquiries</h2>
+                <h3 className="text-5xl md:text-7xl font-display font-black text-white">FAQ</h3>
+              </div>
+              
+              <Accordion type="single" collapsible className="w-full space-y-4">
+                {[
+                  { q: "How do you select your destinations?", a: "We personally visit and vet every location. Our criteria focus on exclusivity, cultural depth, and the highest standards of luxury and safety." },
+                  { q: "Can I customize an existing package?", a: "Absolutely. Every itinerary is fully customizable. Your personal concierge will work with you to tailor every detail to your preferences." },
+                  { q: "What is included in the 'Luxe Standard'?", a: "It includes 24/7 concierge, private transportation, priority access to attractions, and hand-selected premium accommodations." },
+                  { q: "Do you offer private jet services?", a: "Yes, we partner with world-class private aviation companies to provide seamless air travel as part of your experience." }
+                ].map((item, i) => (
+                  <AccordionItem key={i} value={`item-${i}`} className="border-white/10 px-6 bg-white/[0.02]">
+                    <AccordionTrigger className="text-xl font-display font-bold hover:no-underline py-8 text-left uppercase tracking-tight">
+                      {item.q}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-white/60 text-lg leading-relaxed pb-8 font-light">
+                      {item.a}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </section>
+
+          {/* New Footer */}
+          <footer className="relative z-20 bg-[#0a0a0a] text-white pt-24 pb-12 border-t border-white/5">
+            <div className="max-w-7xl mx-auto px-6 md:px-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
+                <div className="space-y-8">
+                  <div className="text-3xl font-display font-black tracking-tighter">LUXE.</div>
+                  <p className="text-white/40 font-light leading-relaxed">
+                    Redefining luxury travel since 2006. We create transformative journeys for those who seek the extraordinary.
+                  </p>
+                  <div className="flex gap-4">
+                    {[Instagram, Facebook, Twitter, Youtube].map((Icon, i) => (
+                      <a key={i} href="#" className="w-10 h-10 flex items-center justify-center border border-white/10 hover:bg-white hover:text-black transition-all">
+                        <Icon className="w-4 h-4" />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <h4 className="text-xs uppercase tracking-[0.4em] font-bold text-white/40">Destinations</h4>
+                  <ul className="space-y-4 text-sm tracking-widest uppercase">
+                    <li><a href="#" className="hover:text-white/60 transition-colors">Europe</a></li>
+                    <li><a href="#" className="hover:text-white/60 transition-colors">Asia Pacific</a></li>
+                    <li><a href="#" className="hover:text-white/60 transition-colors">Americas</a></li>
+                    <li><a href="#" className="hover:text-white/60 transition-colors">Middle East</a></li>
+                  </ul>
+                </div>
+
+                <div className="space-y-6">
+                  <h4 className="text-xs uppercase tracking-[0.4em] font-bold text-white/40">Company</h4>
+                  <ul className="space-y-4 text-sm tracking-widest uppercase">
+                    <li><a href="#" className="hover:text-white/60 transition-colors">Our Story</a></li>
+                    <li><a href="#" className="hover:text-white/60 transition-colors">Careers</a></li>
+                    <li><a href="#" className="hover:text-white/60 transition-colors">Press Room</a></li>
+                    <li><a href="#" className="hover:text-white/60 transition-colors">Contact</a></li>
+                  </ul>
+                </div>
+
+                <div className="space-y-6">
+                  <h4 className="text-xs uppercase tracking-[0.4em] font-bold text-white/40">Newsletter</h4>
+                  <p className="text-sm text-white/40">Subscribe to receive curated travel inspiration directly to your inbox.</p>
+                  <div className="flex border-b border-white/20 pb-2">
+                    <input type="email" placeholder="Your email" className="bg-transparent flex-1 text-sm focus:outline-none" />
+                    <button className="text-white/60 hover:text-white transition-colors">
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div className="text-[10px] uppercase tracking-[0.5em] text-white/20">
+                  © 2026 LUXE TRAVEL CO. ALL RIGHTS RESERVED.
+                </div>
+                <div className="flex gap-8 text-[10px] uppercase tracking-[0.5em] text-white/20">
+                  <a href="#" className="hover:text-white transition-colors">Privacy</a>
+                  <a href="#" className="hover:text-white transition-colors">Terms</a>
+                  <a href="#" className="hover:text-white transition-colors">Cookies</a>
+                </div>
+                <div className="flex gap-4 opacity-20 grayscale">
+                  <SiVisa className="text-3xl" />
+                  <SiMastercard className="text-3xl" />
+                  <SiAmericanexpress className="text-3xl" />
+                </div>
+              </div>
             </div>
           </footer>
         </motion.div>
