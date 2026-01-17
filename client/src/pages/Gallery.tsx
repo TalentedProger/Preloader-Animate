@@ -9,6 +9,9 @@ import stockMaldives from "@assets/stock_images/luxury_travel_destin_fb1d68db.jp
 import stockAlps from "@assets/stock_images/luxury_travel_destin_c835dd8b.jpg";
 import stockDesert from "@assets/stock_images/luxury_travel_destin_379bb3b7.jpg";
 import stockParis from "@assets/stock_images/luxury_travel_destin_e6605b7c.jpg";
+import stockNordic from "@assets/stock_images/nordic_lights_aurora_de916a9f.jpg";
+import stockAuroraPeak from "@assets/stock_images/aurora_peak_snowy_mo_15779f0c.jpg";
+import stockWhiteSands from "@assets/stock_images/white_sands_tropical_03bf2a06.jpg";
 
 const galleryItems = [
   {
@@ -49,7 +52,7 @@ const galleryItems = [
   {
     title: "Nordic Lights",
     location: "Lofoten, Norway",
-    image: "https://images.unsplash.com/photo-1531366930499-41f695548db7?auto=format&fit=crop&q=80",
+    image: stockNordic,
     category: "Arctic",
     size: "small"
   },
@@ -63,14 +66,14 @@ const galleryItems = [
   {
     title: "Aurora peak",
     location: "Lofoten, Norway",
-    image: "https://images.unsplash.com/photo-1579033390041-9958368c47a2?auto=format&fit=crop&q=80",
+    image: stockAuroraPeak,
     category: "Arctic",
     size: "large"
   },
   {
     title: "White Sands",
     location: "Maldives",
-    image: "https://images.unsplash.com/photo-1506953823976-52e1bdc0149a?auto=format&fit=crop&q=80",
+    image: stockWhiteSands,
     category: "Coastal",
     size: "small"
   }
