@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, ArrowRight, Star, Clock, Globe, Shield } from "lucide-react";
 import { Link } from "wouter";
+import { Footer } from "@/components/Footer";
 
 // Import images
 import imgAlpine from "@assets/stock_images/luxury_alpine_chalet_f7c24fd7.jpg";
@@ -166,21 +167,7 @@ export default function Destinations() {
         </div>
       </section>
 
-      {/* Footer - Reusing Home Style */}
-      <footer className="relative z-20 bg-[#0a0a0a] text-white pt-24 pb-12 border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="pt-12 flex flex-col md:flex-row justify-between items-center gap-8">
-            <div className="text-[10px] uppercase tracking-[0.5em] text-white/20">
-              © 2026 LUXE TRAVEL CO. ALL RIGHTS RESERVED.
-            </div>
-            <div className="text-2xl font-display font-black tracking-tighter">LUXE.</div>
-            <div className="flex gap-8 text-[10px] uppercase tracking-[0.5em] text-white/20">
-              <a href="#" className="hover:text-white transition-colors">Privacy</a>
-              <a href="#" className="hover:text-white transition-colors">Terms</a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
