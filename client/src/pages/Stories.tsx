@@ -94,7 +94,7 @@ export default function Stories() {
             viewport={{ once: true }}
             className="group relative aspect-[21/9] overflow-hidden bg-white/5 mb-32"
           >
-            <img src={stories[0].image} className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:scale-105 group-hover:grayscale-0 opacity-60 group-hover:opacity-80" alt="Featured" />
+            <img src={stories[0].image} loading="lazy" className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:scale-105 group-hover:grayscale-0 opacity-60 group-hover:opacity-80" alt="Featured" />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
             <div className="absolute bottom-12 left-12 right-12 md:max-w-2xl space-y-6">
               <span className="text-xs uppercase tracking-[0.4em] px-4 py-1 border border-white/20 bg-black/40 backdrop-blur-md rounded-full text-white">Featured Story</span>
@@ -118,7 +118,7 @@ export default function Stories() {
                 className="group space-y-6"
               >
                 <div className="relative aspect-[4/5] overflow-hidden bg-white/5">
-                  <img src={story.image} className="w-full h-full object-cover grayscale transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0 opacity-70" alt={story.title} />
+                  <img src={story.image} loading="lazy" className="w-full h-full object-cover grayscale transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0 opacity-70" alt={story.title} />
                   <div className="absolute top-6 right-6">
                     <span className="text-[10px] uppercase tracking-[0.3em] px-3 py-1 bg-black/60 backdrop-blur-md border border-white/10 rounded-full text-white/60">{story.category}</span>
                   </div>

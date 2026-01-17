@@ -152,18 +152,18 @@ export default function About() {
             <div className="relative grid grid-cols-2 gap-4 h-[600px]">
               <motion.div style={{ y: y1 }} className="space-y-4">
                 <div className="aspect-[3/4] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
-                  <img src={img1} className="w-full h-full object-cover" alt="Journey 1" />
+                  <img src={img1} loading="lazy" className="w-full h-full object-cover" alt="Journey 1" />
                 </div>
                 <div className="aspect-[3/4] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
-                  <img src={img2} className="w-full h-full object-cover" alt="Journey 2" />
+                  <img src={img2} loading="lazy" className="w-full h-full object-cover" alt="Journey 2" />
                 </div>
               </motion.div>
               <motion.div style={{ y: y2 }} className="space-y-4 pt-20">
                 <div className="aspect-[3/4] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
-                  <img src={img3} className="w-full h-full object-cover" alt="Journey 3" />
+                  <img src={img3} loading="lazy" className="w-full h-full object-cover" alt="Journey 3" />
                 </div>
                 <div className="aspect-[3/4] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
-                  <img src={img4} className="w-full h-full object-cover" alt="Journey 4" />
+                  <img src={img4} loading="lazy" className="w-full h-full object-cover" alt="Journey 4" />
                 </div>
               </motion.div>
             </div>

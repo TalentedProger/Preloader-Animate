@@ -132,6 +132,7 @@ export default function Destinations() {
                   <img 
                     src={dest.image} 
                     alt={dest.title} 
+                    loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-80"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-40" />

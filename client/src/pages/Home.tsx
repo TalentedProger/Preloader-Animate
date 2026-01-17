@@ -191,11 +191,16 @@ export default function Home() {
                 ].map((item, i) => (
                   <motion.div 
                     key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: i * 0.1 }}
+                    viewport={{ once: true }}
                     whileHover={{ y: -10 }}
                     className="group relative aspect-[3/4] overflow-hidden bg-white/5"
                   >
                     <img 
                       src={item.img} 
+                      loading="lazy"
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70" 
                       alt={item.title}
                     />

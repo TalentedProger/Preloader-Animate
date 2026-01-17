@@ -139,6 +139,7 @@ export default function Gallery() {
                 <img 
                   src={item.image} 
                   alt={item.title} 
+                  loading="lazy"
                   className="w-full grayscale transition-all duration-1000 group-hover:scale-105 group-hover:grayscale-0 opacity-70 group-hover:opacity-100"
                 />
                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
