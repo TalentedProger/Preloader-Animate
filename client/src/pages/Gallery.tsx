@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { motion, useAnimationControls } from "framer-motion";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { Maximize2, Camera, MapPin, Instagram } from "lucide-react";
@@ -83,7 +84,27 @@ const galleryItems = [
   }
 ];
 
+const carouselImages = [stock1, stock2, stock3, stockMaldives, stockAlps, stockDesert, stockParis, stockNordic];
+
 export default function Gallery() {
+  const [isPaused, setIsPaused] = useState(false);
+  const controls = useAnimationControls();
+
+  useEffect(() => {
+    if (!isPaused) {
+      controls.start({
+        rotate: [0, 360],
+        transition: {
+          duration: 40,
+          repeat: Infinity,
+          ease: "linear",
+        },
+      });
+    } else {
+      controls.stop();
+    }
+  }, [isPaused, controls]);
+
   return (
     <div className="min-h-screen bg-black text-white font-sans">
       {/* Navigation */}
@@ -158,14 +179,8 @@ export default function Gallery() {
             ))}
           </div>
 
-          {/* Follow our visual journey - Aesthetic Upgrade */}
-          <div className="mt-48 relative">
-            <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none overflow-hidden">
-              <h2 className="text-[25vw] font-display font-black tracking-tighter whitespace-nowrap text-white/5 uppercase select-none">
-                Instagram
-              </h2>
-            </div>
-            
+          {/* Follow our visual journey - Circular Carousel Upgrade */}
+          <div className="mt-48 relative min-h-[800px] flex flex-col items-center justify-center overflow-hidden">
             <div className="relative z-10 text-center space-y-8 mb-20">
               <motion.div
                 initial={{ opacity: 0 }}
@@ -188,42 +203,47 @@ export default function Gallery() {
               </Button>
             </div>
 
-            <div className="relative z-10 flex justify-center items-end gap-0 h-[500px] overflow-visible pb-10">
-              {[stock1, stock2, stock3, stockMaldives, stockAlps].map((img, i) => {
-                // Simplified "Carousel" effect based on cards reference
-                const rotations = [-15, -7, 0, 7, 15];
-                const translations = [-60, -30, 0, 30, 60];
-                const yOffsets = [40, 20, 0, 20, 40];
-                
-                return (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 100 }}
-                    whileInView={{ 
-                      opacity: 1, 
-                      y: yOffsets[i],
-                      rotate: rotations[i],
-                      x: translations[i]
-                    }}
-                    whileHover={{ 
-                      y: -20, 
-                      scale: 1.1, 
-                      zIndex: 50,
-                      rotate: 0,
-                      transition: { duration: 0.3 }
-                    }}
-                    transition={{ delay: i * 0.1, duration: 0.8, ease: "easeOut" }}
-                    viewport={{ once: true }}
-                    className="w-64 aspect-[3/4] relative group overflow-hidden bg-white/5 border border-white/10 shadow-2xl rounded-2xl -ml-20 first:ml-0 cursor-pointer backdrop-blur-sm"
-                    style={{ zIndex: i }}
-                  >
-                    <img src={img} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt={`Visual journey ${i}`} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                      <Instagram className="w-8 h-8 text-white/80" />
-                    </div>
-                  </motion.div>
-                );
-              })}
+            {/* Circular Carousel */}
+            <div 
+              className="relative w-full flex items-center justify-center mt-20"
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
+            >
+              <motion.div
+                animate={controls}
+                className="relative w-[600px] h-[600px] flex items-center justify-center"
+              >
+                {carouselImages.map((img, i) => {
+                  const angle = (i / carouselImages.length) * (2 * Math.PI);
+                  const radius = 350; // Distance from center
+                  const x = Math.cos(angle) * radius;
+                  const y = Math.sin(angle) * radius;
+                  const rotationDegree = (angle * 180) / Math.PI + 90;
+
+                  return (
+                    <motion.div
+                      key={i}
+                      className="absolute w-48 aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md shadow-2xl group cursor-pointer"
+                      style={{
+                        x,
+                        y,
+                        rotate: rotationDegree,
+                      }}
+                      whileHover={{ scale: 1.1, zIndex: 50 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    >
+                      <img 
+                        src={img} 
+                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
+                        alt={`Visual journey ${i}`} 
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                        <Instagram className="w-6 h-6 text-white/80" />
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
             </div>
           </div>
         </div>
