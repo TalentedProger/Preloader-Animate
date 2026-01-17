@@ -65,18 +65,19 @@ export default function Home() {
           transition={{ duration: 1 }}
         >
           {/* Background with slight zoom effect */}
-          <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 z-0 bg-black">
             <motion.div 
+              key={`hero-bg-${Date.now()}`}
               className="w-full h-full"
-              initial={{ scale: 1.1 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 10, ease: "easeOut" }}
+              initial={{ scale: 1.15, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="absolute inset-0 bg-black/40 z-10" />
               <img 
-                src={imgHero} 
+                src={`${imgHero}?v=${Date.now()}`} 
                 alt="Hero Background" 
-                className="w-full h-full object-cover opacity-80"
+                className="w-full h-full object-cover"
               />
             </motion.div>
           </div>

@@ -168,6 +168,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
             initial="initial"
             animate="animate"
             exit="exit"
+            key={`text-${steps[currentStep].id}-${Date.now()}`}
           >
             <h1 
               className="font-display font-black text-6xl md:text-8xl lg:text-[12rem] tracking-tighter uppercase text-center px-4 text-glass-outline relative"
