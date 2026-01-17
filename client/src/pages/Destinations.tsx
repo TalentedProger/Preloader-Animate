@@ -54,7 +54,7 @@ export default function Destinations() {
         </Link>
         <div className="hidden md:flex gap-8 text-sm uppercase tracking-widest text-white/70">
           <Link href="/destinations"><a className="text-white">Destinations</a></Link>
-          <a href="#" className="hover:text-white transition-colors">Stories</a>
+          <Link href="/stories"><a className="hover:text-white transition-colors">Stories</a></Link>
           <a href="#" className="hover:text-white transition-colors">Gallery</a>
           <a href="#" className="hover:text-white transition-colors">About</a>
         </div>

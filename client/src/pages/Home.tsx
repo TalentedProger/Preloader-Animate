@@ -90,7 +90,9 @@ export default function Home() {
               <Link href="/destinations">
                 <a className="hover:text-white transition-colors">Destinations</a>
               </Link>
-              <a href="#" className="hover:text-white transition-colors">Stories</a>
+              <Link href="/stories">
+                <a className="hover:text-white transition-colors">Stories</a>
+              </Link>
               <a href="#" className="hover:text-white transition-colors">Gallery</a>
               <a href="#" className="hover:text-white transition-colors">About</a>
             </div>
