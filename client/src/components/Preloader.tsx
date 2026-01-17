@@ -7,6 +7,22 @@ import imgExperience from "@assets/image_1768503607623.png";
 import imgComfort from "@assets/image_1768503721085.png";
 import imgConfidence from "@assets/image_1768503794711.png";
 
+// Import all images that need to be preloaded
+import imgAlpine from "@assets/stock_images/luxury_alpine_chalet_f7c24fd7.jpg";
+import imgRiviera from "@assets/stock_images/french_riviera_azure_b5453c77.jpg";
+import imgDesert from "@assets/stock_images/dubai_desert_dunes_l_4d2d48dc.jpg";
+
+// All images to preload during preloader animation
+const imagesToPreload = [
+  imgExplore,
+  imgExperience,
+  imgComfort,
+  imgConfidence,
+  imgAlpine,
+  imgRiviera,
+  imgDesert,
+];
+
 const steps = [
   {
     id: 1,
@@ -41,6 +57,25 @@ interface PreloaderProps {
 export function Preloader({ onComplete }: PreloaderProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [imagesLoaded, setImagesLoaded] = useState(0);
+
+  // Preload all images during preloader animation
+  useEffect(() => {
+    let loadedCount = 0;
+    
+    imagesToPreload.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        loadedCount++;
+        setImagesLoaded(loadedCount);
+      };
+      img.onerror = () => {
+        loadedCount++;
+        setImagesLoaded(loadedCount);
+      };
+    });
+  }, []);
 
   useEffect(() => {
     const totalDuration = 7500;
@@ -177,8 +212,16 @@ export function Preloader({ onComplete }: PreloaderProps) {
         </motion.div>
       </AnimatePresence>
 
-      <div className="absolute bottom-10 right-10 z-[100] font-display font-black text-6xl md:text-9xl text-glass-outline tabular-nums opacity-80">
-        {Math.round(progress)}%
+      {/* Progress and Image Loading Indicator */}
+      <div className="absolute bottom-10 right-10 z-[100] flex flex-col items-end gap-2">
+        <div className="font-display font-black text-6xl md:text-9xl text-glass-outline tabular-nums opacity-80">
+          {Math.round(progress)}%
+        </div>
+        {imagesLoaded < imagesToPreload.length && (
+          <div className="text-xs uppercase tracking-[0.3em] text-white/30 font-bold">
+            Loading assets {imagesLoaded}/{imagesToPreload.length}
+          </div>
+        )}
       </div>
     </div>
   );

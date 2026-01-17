@@ -36,7 +36,11 @@ const steps_assets = [
 ];
 
 export default function Home() {
-  const [showPreloader, setShowPreloader] = useState(true);
+  // Показываем preloader только при первой загрузке сайта
+  const [showPreloader, setShowPreloader] = useState(() => {
+    return !sessionStorage.getItem('luxe-preloader-shown');
+  });
+  
   const createSubscriber = useCreateSubscriber();
 
   const form = useForm<InsertSubscriber>({
@@ -45,6 +49,11 @@ export default function Home() {
       email: "",
     },
   });
+
+  const handlePreloaderComplete = () => {
+    sessionStorage.setItem('luxe-preloader-shown', 'true');
+    setShowPreloader(false);
+  };
 
   const onSubmit = (data: InsertSubscriber) => {
     createSubscriber.mutate(data, {
@@ -55,38 +64,46 @@ export default function Home() {
   return (
     <>
       {showPreloader && (
-        <Preloader onComplete={() => setShowPreloader(false)} />
+        <Preloader onComplete={handlePreloaderComplete} />
       )}
 
       {/* Main Content - revealed after preloader */}
       {!showPreloader && (
         <motion.div
-          className="relative min-h-screen w-full flex flex-col overflow-hidden bg-black text-white font-sans"
+          className="relative w-full flex flex-col bg-black text-white font-sans"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
         >
-          {/* Background with slight zoom effect */}
-          <div className="absolute inset-0 z-0 bg-black">
-            <motion.div 
-              key={`hero-bg-${Date.now()}`}
-              className="w-full h-full"
-              initial={{ scale: 1.15, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <div className="absolute inset-0 bg-black/40 z-10" />
-              <img 
-                src={`${imgHero}?v=${Date.now()}`} 
-                alt="Hero Background" 
-                className="w-full h-full object-cover"
-              />
-            </motion.div>
-          </div>
+          {/* Hero Section with Fixed Background */}
+          <section className="relative min-h-screen w-full overflow-hidden">
+            {/* Background Image - Fixed positioning to prevent layout shift */}
+            <div className="absolute inset-0 z-0">
+              <div className="relative w-full h-full bg-black">
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-black/40 z-10" />
+                
+                {/* Hero Image - No animation scale, proper object-position */}
+                <motion.img 
+                  src={imgHero} 
+                  alt="Luxury mountain resort with dramatic alpine peaks in background" 
+                  className="absolute inset-0 w-full h-full object-cover object-center"
+                  style={{ objectPosition: 'center 45%' }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 1.2, ease: "easeOut" }}
+                  loading="eager"
+                />
+              </div>
+            </div>
 
-          {/* Navigation */}
-          <nav className="relative z-20 w-full px-6 py-6 md:px-12 flex justify-between items-center">
-            <div className="text-2xl font-display font-bold tracking-tight">LUXE.</div>
+            {/* Navigation */}
+            <nav className="relative z-20 w-full px-6 py-6 md:px-12 flex justify-between items-center">
+            <Link href="/">
+              <a className="text-2xl font-display font-bold tracking-tight hover:opacity-80 transition-opacity cursor-pointer">
+                LUXE.
+              </a>
+            </Link>
             <div className="hidden md:flex gap-8 text-sm uppercase tracking-widest text-white/70">
               <Link href="/destinations">
                 <a className="hover:text-white transition-colors">Destinations</a>
@@ -169,6 +186,7 @@ export default function Home() {
               </div>
             </motion.div>
           </main>
+        </section>
 
           {/* Featured Destinations */}
           <section className="relative z-20 py-24 px-6 md:px-12 bg-black">
