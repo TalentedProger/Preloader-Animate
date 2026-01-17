@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { Maximize2, Camera, MapPin, Instagram } from "lucide-react";
 
+import { Footer } from "@/components/Footer";
+
 const galleryItems = [
   {
     title: "Alpine Morning",
@@ -150,21 +152,9 @@ export default function Gallery() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="relative z-20 bg-[#0a0a0a] text-white pt-24 pb-12 border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="pt-12 flex flex-col md:flex-row justify-between items-center gap-8">
-            <div className="text-[10px] uppercase tracking-[0.5em] text-white/20">
-              © 2026 LUXE TRAVEL CO. ALL RIGHTS RESERVED.
-            </div>
-            <div className="text-2xl font-display font-black tracking-tighter">LUXE.</div>
-            <div className="flex gap-8 text-[10px] uppercase tracking-[0.5em] text-white/20">
-              <a href="#" className="hover:text-white transition-colors">Privacy</a>
-              <a href="#" className="hover:text-white transition-colors">Terms</a>
-            </div>
-          </div>
+          <Footer />
         </div>
-      </footer>
+      </section>
     </div>
   );
 }
