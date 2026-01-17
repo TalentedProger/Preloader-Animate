@@ -203,46 +203,35 @@ export default function Gallery() {
               </Button>
             </div>
 
-            {/* Semi-Circular Carousel */}
-            <div 
-              className="relative w-[90vw] flex items-center justify-center mt-20 min-h-[500px]"
-            >
+            {/* Marquee Slider */}
+            <div className="mt-24 relative w-screen left-1/2 -translate-x-1/2 overflow-hidden py-10">
               <motion.div
-                animate={controls}
-                className="relative w-full h-full flex items-center justify-center"
+                className="flex gap-6 whitespace-nowrap"
+                animate={{
+                  x: [0, -1920], // Adjust based on content width
+                }}
+                transition={{
+                  duration: 30,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
               >
-                {carouselImages.map((img, i) => {
-                  const angleStep = Math.PI / (carouselImages.length - 1);
-                  const angle = Math.PI + (i * angleStep);
-                  const radiusX = 600; // Wider radius for 90vw
-                  const radiusY = 300; // Semi-circle height
-                  const x = Math.cos(angle) * radiusX;
-                  const y = Math.sin(angle) * radiusY;
-                  const rotationDegree = (angle * 180) / Math.PI + 90;
-
-                  return (
-                    <motion.div
-                      key={i}
-                      className="absolute w-64 aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md shadow-2xl group cursor-pointer"
-                      style={{
-                        x,
-                        y,
-                        rotate: rotationDegree,
-                      }}
-                      whileHover={{ scale: 1.05, zIndex: 50 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    >
-                      <img 
-                        src={img} 
-                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
-                        alt={`Visual journey ${i}`} 
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                        <Instagram className="w-6 h-6 text-white/80" />
-                      </div>
-                    </motion.div>
-                  );
-                })}
+                {[...carouselImages, ...carouselImages].map((img, i) => (
+                  <div
+                    key={i}
+                    className="w-64 aspect-[3/4] flex-shrink-0 rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md shadow-xl group cursor-pointer"
+                  >
+                    <img 
+                      src={img} 
+                      loading="lazy"
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
+                      alt={`Visual journey ${i}`} 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                      <Instagram className="w-6 h-6 text-white/80" />
+                    </div>
+                  </div>
+                ))}
               </motion.div>
             </div>
           </div>
