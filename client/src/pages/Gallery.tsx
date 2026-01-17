@@ -13,6 +13,10 @@ import stockNordic from "@assets/stock_images/nordic_lights_aurora_de916a9f.jpg"
 import stockAuroraPeak from "@assets/stock_images/aurora_peak_snowy_mo_15779f0c.jpg";
 import stockWhiteSands from "@assets/stock_images/white_sands_tropical_03bf2a06.jpg";
 
+import stock1 from "@assets/stock_images/luxury_travel_aesthe_e0e843fa.jpg";
+import stock2 from "@assets/stock_images/luxury_travel_aesthe_f05e8da4.jpg";
+import stock3 from "@assets/stock_images/luxury_travel_aesthe_b953f4db.jpg";
+
 const galleryItems = [
   {
     title: "Alpine Morning",
@@ -153,16 +157,51 @@ export default function Gallery() {
             ))}
           </div>
 
-          <div className="mt-32 text-center space-y-8">
-            <div className="flex items-center justify-center gap-4">
-              <div className="h-px w-24 bg-white/10" />
-              <Camera className="w-6 h-6 text-white/20" />
-              <div className="h-px w-24 bg-white/10" />
+          {/* Follow our visual journey - Aesthetic Upgrade */}
+          <div className="mt-48 relative">
+            <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none">
+              <h2 className="text-[20vw] font-display font-black tracking-tighter whitespace-nowrap">INSTAGRAM</h2>
             </div>
-            <p className="text-white/40 uppercase tracking-[0.4em] text-sm">Follow our visual journey</p>
-            <Button variant="outline" className="h-16 px-12 rounded-none border-white/10 text-white hover:bg-white hover:text-black font-bold tracking-[0.3em]">
-              <Instagram className="mr-2 w-5 h-5" /> @LUXETRAVEL
-            </Button>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative z-10">
+              {[stock1, stock2, stock3].map((img, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.2, duration: 1 }}
+                  viewport={{ once: true }}
+                  className="aspect-square relative group overflow-hidden bg-white/5"
+                >
+                  <img src={img} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" alt={`Visual journey ${i}`} />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                    <Instagram className="w-8 h-8 text-white/60" />
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="mt-20 text-center relative z-10 space-y-8">
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                className="inline-flex items-center gap-4 text-white/30"
+              >
+                <div className="h-px w-12 bg-white/10" />
+                <Camera className="w-5 h-5" />
+                <div className="h-px w-12 bg-white/10" />
+              </motion.div>
+              
+              <div className="space-y-4">
+                <p className="text-white/40 uppercase tracking-[0.4em] text-xs font-bold">The Continuous Narrative</p>
+                <h3 className="text-4xl md:text-5xl font-display font-black tracking-tight">FOLLOW OUR PERSPECTIVE</h3>
+              </div>
+              
+              <Button variant="outline" className="h-20 px-12 rounded-none border-white/10 text-white hover:bg-white hover:text-black font-bold tracking-[0.3em] transition-all text-sm">
+                @LUXETRAVEL
+              </Button>
+            </div>
           </div>
         </div>
       </section>
