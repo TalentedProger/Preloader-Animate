@@ -65,19 +65,21 @@ export default function Home() {
           transition={{ duration: 1 }}
         >
           {/* Background with slight zoom effect */}
-          <motion.div 
-            className="absolute inset-0 z-0"
-            initial={{ scale: 1.1 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 10, ease: "easeOut" }}
-          >
-            <div className="absolute inset-0 bg-black/40 z-10" />
-            <img 
-              src={imgHero} 
-              alt="Hero Background" 
-              className="w-full h-full object-cover opacity-80"
-            />
-          </motion.div>
+          <div className="absolute inset-0 z-0">
+            <motion.div 
+              className="w-full h-full"
+              initial={{ scale: 1.1 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 10, ease: "easeOut" }}
+            >
+              <div className="absolute inset-0 bg-black/40 z-10" />
+              <img 
+                src={imgHero} 
+                alt="Hero Background" 
+                className="w-full h-full object-cover opacity-80"
+              />
+            </motion.div>
+          </div>
 
           {/* Navigation */}
           <nav className="relative z-20 w-full px-6 py-6 md:px-12 flex justify-between items-center">

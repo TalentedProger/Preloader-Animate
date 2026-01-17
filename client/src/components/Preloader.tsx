@@ -95,10 +95,10 @@ export function Preloader({ onComplete }: PreloaderProps) {
   const textVariants = {
     initial: (direction: string) => {
       switch (direction) {
-        case "left": return { x: "-100vw", opacity: 0 };
-        case "right": return { x: "100vw", opacity: 0 };
-        case "top": return { y: "-100vh", opacity: 0 };
-        case "bottom": return { y: "100vh", opacity: 0 };
+        case "left": return { x: "-100%", opacity: 0 };
+        case "right": return { x: "100%", opacity: 0 };
+        case "top": return { y: "-100%", opacity: 0 };
+        case "bottom": return { y: "100%", opacity: 0 };
         default: return { opacity: 0 };
       }
     },
