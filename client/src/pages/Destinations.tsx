@@ -55,8 +55,8 @@ export default function Destinations() {
         <div className="hidden md:flex gap-8 text-sm uppercase tracking-widest text-white/70">
           <Link href="/destinations"><a className="text-white">Destinations</a></Link>
           <Link href="/stories"><a className="hover:text-white transition-colors">Stories</a></Link>
-          <a href="#" className="hover:text-white transition-colors">Gallery</a>
-          <a href="#" className="hover:text-white transition-colors">About</a>
+          <Link href="/gallery"><a className="hover:text-white transition-colors">Gallery</a></Link>
+          <Link href="/about"><a className="hover:text-white transition-colors">About</a></Link>
         </div>
         <Button variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white hover:text-black transition-all">
           Book Now

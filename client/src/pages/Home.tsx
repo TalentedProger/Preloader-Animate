@@ -93,8 +93,12 @@ export default function Home() {
               <Link href="/stories">
                 <a className="hover:text-white transition-colors">Stories</a>
               </Link>
-              <a href="#" className="hover:text-white transition-colors">Gallery</a>
-              <a href="#" className="hover:text-white transition-colors">About</a>
+              <Link href="/gallery">
+                <a className="hover:text-white transition-colors">Gallery</a>
+              </Link>
+              <Link href="/about">
+                <a className="hover:text-white transition-colors">About</a>
+              </Link>
             </div>
             <Button variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white hover:text-black transition-all">
               Book Now
