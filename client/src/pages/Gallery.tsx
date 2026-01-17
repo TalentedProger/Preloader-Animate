@@ -5,11 +5,16 @@ import { Maximize2, Camera, MapPin, Instagram } from "lucide-react";
 
 import { Footer } from "@/components/Footer";
 
+import stockMaldives from "@assets/stock_images/luxury_travel_destin_fb1d68db.jpg";
+import stockAlps from "@assets/stock_images/luxury_travel_destin_c835dd8b.jpg";
+import stockDesert from "@assets/stock_images/luxury_travel_destin_379bb3b7.jpg";
+import stockParis from "@assets/stock_images/luxury_travel_destin_e6605b7c.jpg";
+
 const galleryItems = [
   {
     title: "Alpine Morning",
     location: "Zermatt, Switzerland",
-    image: "https://images.unsplash.com/photo-1502784444187-359ac186c5bb?auto=format&fit=crop&q=80",
+    image: stockAlps,
     category: "Mountain",
     size: "large"
   },
@@ -23,8 +28,15 @@ const galleryItems = [
   {
     title: "Golden Hour",
     location: "Empty Quarter, UAE",
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80",
+    image: stockDesert,
     category: "Desert",
+    size: "small"
+  },
+  {
+    title: "Parisian Elegance",
+    location: "Paris, France",
+    image: stockParis,
+    category: "City",
     size: "small"
   },
   {
@@ -44,7 +56,7 @@ const galleryItems = [
   {
     title: "Island Escape",
     location: "Maldives",
-    image: "https://images.unsplash.com/photo-1514282401047-d78a73a6704a?auto=format&fit=crop&q=80",
+    image: stockMaldives,
     category: "Coastal",
     size: "small"
   },
