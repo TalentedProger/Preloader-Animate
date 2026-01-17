@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ArrowRight, Loader2, Star, MapPin, Globe, Shield, Phone, Instagram, Facebook, Twitter, Youtube, Mail } from "lucide-react";
 import { SiVisa, SiMastercard, SiAmericanexpress } from "react-icons/si";
+import { Link } from "wouter";
 
 // Re-use last image for background continuity
 import imgHero from "@assets/image_1768503794711.png";
@@ -86,7 +87,9 @@ export default function Home() {
           <nav className="relative z-20 w-full px-6 py-6 md:px-12 flex justify-between items-center">
             <div className="text-2xl font-display font-bold tracking-tight">LUXE.</div>
             <div className="hidden md:flex gap-8 text-sm uppercase tracking-widest text-white/70">
-              <a href="#" className="hover:text-white transition-colors">Destinations</a>
+              <Link href="/destinations">
+                <a className="hover:text-white transition-colors">Destinations</a>
+              </Link>
               <a href="#" className="hover:text-white transition-colors">Stories</a>
               <a href="#" className="hover:text-white transition-colors">Gallery</a>
               <a href="#" className="hover:text-white transition-colors">About</a>
