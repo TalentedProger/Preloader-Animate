@@ -21,6 +21,11 @@ import imgExperience from "@assets/image_1768503607623.png";
 import imgComfort from "@assets/image_1768503721085.png";
 import imgConfidence from "@assets/image_1768503794711.png";
 
+// New high-quality stock images
+import imgAlpine from "@assets/stock_images/luxury_alpine_chalet_f7c24fd7.jpg";
+import imgRiviera from "@assets/stock_images/french_riviera_azure_b5453c77.jpg";
+import imgDesert from "@assets/stock_images/dubai_desert_dunes_l_4d2d48dc.jpg";
+
 const steps_assets = [
   { id: 1, text: "EXPLORE", image: imgExplore },
   { id: 2, text: "EXPERIENCE", image: imgExperience },
@@ -61,16 +66,16 @@ export default function Home() {
         >
           {/* Background with slight zoom effect */}
           <motion.div 
-            className="absolute inset-0 z-0"
+            className="absolute inset-0 z-0 overflow-hidden"
             initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}
             transition={{ duration: 10, ease: "easeOut" }}
           >
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/20 z-10" />
             <img 
               src={imgHero} 
               alt="Hero Background" 
-              className="w-full h-full object-cover opacity-60"
+              className="w-full h-[120%] object-cover object-center opacity-70 translate-y-[-10%]"
             />
           </motion.div>
 
@@ -167,9 +172,9 @@ export default function Home() {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {[
-                  { title: "Alpine Serenity", location: "Switzerland", img: steps_assets[0].image },
-                  { title: "Azure Coast", location: "French Riviera", img: steps_assets[1].image },
-                  { title: "Desert Mirage", location: "Dubai", img: steps_assets[2].image }
+                  { title: "Alpine Serenity", location: "Switzerland", img: imgAlpine },
+                  { title: "Azure Coast", location: "French Riviera", img: imgRiviera },
+                  { title: "Desert Mirage", location: "Dubai", img: imgDesert }
                 ].map((item, i) => (
                   <motion.div 
                     key={i}
@@ -346,7 +351,7 @@ export default function Home() {
                   { q: "What is included in the 'Luxe Standard'?", a: "It includes 24/7 concierge, private transportation, priority access to attractions, and hand-selected premium accommodations." },
                   { q: "Do you offer private jet services?", a: "Yes, we partner with world-class private aviation companies to provide seamless air travel as part of your experience." }
                 ].map((item, i) => (
-                  <AccordionItem key={i} value={`item-${i}`} className="border-white/10 px-6 bg-white/[0.02]">
+                  <AccordionItem key={i} value={`item-${i}`} className="border-white/10 px-6 bg-white/[0.02] no-default-hover-elevate">
                     <AccordionTrigger className="text-xl font-display font-bold hover:no-underline py-8 text-left uppercase tracking-tight">
                       {item.q}
                     </AccordionTrigger>
