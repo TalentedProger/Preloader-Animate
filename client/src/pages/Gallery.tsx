@@ -203,23 +203,34 @@ export default function Gallery() {
               </Button>
             </div>
 
-            {/* Marquee Slider */}
-            <div className="mt-24 relative w-screen left-1/2 -translate-x-1/2 overflow-hidden py-10">
+            {/* Marquee Slider with 3D Perspective */}
+            <div className="mt-24 relative w-screen left-1/2 -translate-x-1/2 overflow-hidden py-20 perspective-[2000px]">
               <motion.div
-                className="flex gap-6 whitespace-nowrap"
+                className="flex gap-12 whitespace-nowrap px-12"
                 animate={{
-                  x: [0, -1920], // Adjust based on content width
+                  x: [0, -2500], // Adjust based on content width
                 }}
                 transition={{
-                  duration: 30,
+                  duration: 40,
                   repeat: Infinity,
                   ease: "linear",
                 }}
+                style={{ transformStyle: "preserve-3d" }}
               >
-                {[...carouselImages, ...carouselImages].map((img, i) => (
-                  <div
+                {[...carouselImages, ...carouselImages, ...carouselImages].map((img, i) => (
+                  <motion.div
                     key={i}
-                    className="w-64 aspect-[3/4] flex-shrink-0 rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md shadow-xl group cursor-pointer"
+                    className="w-72 aspect-[3/4] flex-shrink-0 rounded-[2rem] overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md shadow-2xl group cursor-pointer relative"
+                    style={{
+                      transformStyle: "preserve-3d",
+                      rotateY: -15, // Constant perspective angle
+                    }}
+                    whileHover={{ 
+                      rotateY: 0, 
+                      scale: 1.1,
+                      z: 100,
+                      transition: { duration: 0.4, ease: "easeOut" }
+                    }}
                   >
                     <img 
                       src={img} 
@@ -228,11 +239,15 @@ export default function Gallery() {
                       alt={`Visual journey ${i}`} 
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                      <Instagram className="w-6 h-6 text-white/80" />
+                      <Instagram className="w-8 h-8 text-white/80" />
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </motion.div>
+              
+              {/* Fade edges */}
+              <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-black to-transparent z-10" />
+              <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-black to-transparent z-10" />
             </div>
           </div>
         </div>
