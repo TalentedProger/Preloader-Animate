@@ -1,18 +1,13 @@
 import { useState } from "react";
 import { Preloader } from "@/components/Preloader";
+import { BookingModal } from "@/components/BookingModal";
 import { motion } from "framer-motion";
-import { useCreateSubscriber } from "@/hooks/use-subscribers";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { insertSubscriberSchema, type InsertSubscriber } from "@shared/schema";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Navbar } from "@/components/Navbar";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { ArrowRight, Loader2, Star, MapPin, Globe, Shield, Phone, Instagram, Facebook, Twitter, Youtube, Mail } from "lucide-react";
+import { ArrowRight, Star, MapPin, Globe, Shield, Phone, Instagram, Facebook, Twitter, Youtube, Mail } from "lucide-react";
 import { SiVisa, SiMastercard, SiAmericanexpress } from "react-icons/si";
 import { Link } from "wouter";
-import { Footer } from "@/components/Footer";
 
 // Re-use last image for background continuity
 import imgHero from "@assets/image_1768503794711.png";
@@ -36,26 +31,21 @@ const steps_assets = [
 ];
 
 export default function Home() {
-  const [showPreloader, setShowPreloader] = useState(true);
-  const createSubscriber = useCreateSubscriber();
-
-  const form = useForm<InsertSubscriber>({
-    resolver: zodResolver(insertSubscriberSchema),
-    defaultValues: {
-      email: "",
-    },
+  const [showPreloader, setShowPreloader] = useState(() => {
+    return !sessionStorage.getItem('preloader_shown');
   });
+  const [bookingOpen, setBookingOpen] = useState(false);
 
-  const onSubmit = (data: InsertSubscriber) => {
-    createSubscriber.mutate(data, {
-      onSuccess: () => form.reset(),
-    });
+  const handlePreloaderComplete = () => {
+    sessionStorage.setItem('preloader_shown', '1');
+    setShowPreloader(false);
   };
 
   return (
     <>
+      <BookingModal isOpen={bookingOpen} onClose={() => setBookingOpen(false)} />
       {showPreloader && (
-        <Preloader onComplete={() => setShowPreloader(false)} />
+        <Preloader onComplete={handlePreloaderComplete} />
       )}
 
       {/* Main Content - revealed after preloader */}
@@ -67,47 +57,27 @@ export default function Home() {
           transition={{ duration: 1 }}
         >
           {/* Background with slight zoom effect */}
-          <div className="absolute inset-0 z-0 bg-black">
+          <div className="absolute inset-x-0 top-0 h-screen z-0 bg-black">
             <motion.div 
-              key={`hero-bg-${Date.now()}`}
               className="w-full h-full"
-              initial={{ scale: 1.15, opacity: 0 }}
+              initial={{ scale: 1.08, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="absolute inset-0 bg-black/40 z-10" />
               <img 
-                src={`${imgHero}?v=${Date.now()}`} 
+                src={imgHero} 
                 alt="Hero Background" 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-center"
               />
             </motion.div>
           </div>
 
           {/* Navigation */}
-          <nav className="relative z-20 w-full px-6 py-6 md:px-12 flex justify-between items-center">
-            <div className="text-2xl font-display font-bold tracking-tight">LUXE.</div>
-            <div className="hidden md:flex gap-8 text-sm uppercase tracking-widest text-white/70">
-              <Link href="/destinations">
-                <a className="hover:text-white transition-colors">Destinations</a>
-              </Link>
-              <Link href="/stories">
-                <a className="hover:text-white transition-colors">Stories</a>
-              </Link>
-              <Link href="/gallery">
-                <a className="hover:text-white transition-colors">Gallery</a>
-              </Link>
-              <Link href="/about">
-                <a className="hover:text-white transition-colors">About</a>
-              </Link>
-            </div>
-            <Button variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white hover:text-black transition-all">
-              Book Now
-            </Button>
-          </nav>
+          <Navbar onBookNow={() => setBookingOpen(true)} transparent />
 
           {/* Hero Content */}
-          <main className="relative z-20 min-h-[90vh] flex flex-col items-center justify-center text-center px-4 md:px-6 py-20">
+          <main className="relative z-20 min-h-[calc(100vh-80px)] flex flex-col items-center justify-center text-center px-4 md:px-6 py-12">
             <motion.div
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -131,41 +101,21 @@ export default function Home() {
                 Discover the world's most breathtaking destinations with unparalelled comfort and style. Your adventure begins where the map ends.
               </p>
 
-              {/* Newsletter Form */}
+              {/* Newsletter CTA */}
               <div className="pt-12 w-full max-w-md mx-auto">
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-3">
-                    <div className="flex gap-0 relative group">
-                      <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                          <FormItem className="flex-1">
-                            <FormControl>
-                              <Input 
-                                placeholder="Enter your email for exclusive offers" 
-                                {...field} 
-                                className="bg-white/5 border-white/10 text-white placeholder:text-white/30 h-14 rounded-none focus:border-white/40 transition-all backdrop-blur-md px-6 text-base border-r-0"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <Button 
-                        type="submit" 
-                        disabled={createSubscriber.isPending}
-                        className="h-14 px-8 rounded-none bg-white text-black hover:bg-white/90 font-bold tracking-wide transition-all active:scale-95"
-                      >
-                        {createSubscriber.isPending ? (
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                        ) : (
-                          <ArrowRight className="w-6 h-6" />
-                        )}
-                      </Button>
-                    </div>
-                  </form>
-                </Form>
+                <div className="flex gap-0 relative group">
+                  <input 
+                    type="email" 
+                    placeholder="Enter your email for exclusive offers" 
+                    className="flex-1 bg-white/5 border border-white/10 text-white placeholder:text-white/30 h-14 px-6 text-base border-r-0 focus:outline-none focus:border-white/40 transition-all backdrop-blur-md"
+                  />
+                  <a 
+                    href="mailto:hello@luxetravel.com?subject=Newsletter%20Subscription"
+                    className="h-14 px-8 bg-white text-black hover:bg-white/90 font-bold tracking-wide transition-all active:scale-95 inline-flex items-center justify-center"
+                  >
+                    <ArrowRight className="w-6 h-6" />
+                  </a>
+                </div>
               </div>
             </motion.div>
           </main>

@@ -43,7 +43,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const totalDuration = 7500;
+    const totalDuration = 4000;
     const startTime = Date.now();
 
     const progressInterval = setInterval(() => {

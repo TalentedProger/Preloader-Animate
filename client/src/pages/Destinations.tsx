@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Navbar } from "@/components/Navbar";
+import { BookingModal } from "@/components/BookingModal";
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, ArrowRight, Star, Clock, Globe, Shield } from "lucide-react";
 import { Link } from "wouter";
@@ -46,23 +49,11 @@ const destinations = [
 ];
 
 export default function Destinations() {
+  const [bookingOpen, setBookingOpen] = useState(false);
   return (
     <div className="min-h-screen bg-black text-white font-sans">
-      {/* Navigation - Simplified for pages */}
-      <nav className="relative z-20 w-full px-6 py-6 md:px-12 flex justify-between items-center bg-black/50 backdrop-blur-md sticky top-0 border-b border-white/5">
-        <Link href="/">
-          <a className="text-2xl font-display font-bold tracking-tight">LUXE.</a>
-        </Link>
-        <div className="hidden md:flex gap-8 text-sm uppercase tracking-widest text-white/70">
-          <Link href="/destinations"><a className="text-white">Destinations</a></Link>
-          <Link href="/stories"><a className="hover:text-white transition-colors">Stories</a></Link>
-          <Link href="/gallery"><a className="hover:text-white transition-colors">Gallery</a></Link>
-          <Link href="/about"><a className="hover:text-white transition-colors">About</a></Link>
-        </div>
-        <Button variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white hover:text-black transition-all">
-          Book Now
-        </Button>
-      </nav>
+      <BookingModal isOpen={bookingOpen} onClose={() => setBookingOpen(false)} />
+      <Navbar onBookNow={() => setBookingOpen(true)} />
 
       {/* Hero Section */}
       <section className="relative py-24 md:py-32 px-6 overflow-hidden">

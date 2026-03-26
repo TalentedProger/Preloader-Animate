@@ -1,6 +1,8 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Navbar } from "@/components/Navbar";
+import { BookingModal } from "@/components/BookingModal";
 import { Link } from "wouter";
 import { Award, Users, Globe, History, Shield, Star } from "lucide-react";
 import { Footer } from "@/components/Footer";
@@ -11,6 +13,7 @@ import img3 from "@assets/stock_images/luxury_travel_destin_379bb3b7.jpg";
 import img4 from "@assets/stock_images/luxury_travel_destin_e6605b7c.jpg";
 
 export default function About() {
+  const [bookingOpen, setBookingOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -22,21 +25,8 @@ export default function About() {
 
   return (
     <div className="min-h-screen bg-black text-white font-sans">
-      {/* Navigation */}
-      <nav className="relative z-20 w-full px-6 py-6 md:px-12 flex justify-between items-center bg-black/50 backdrop-blur-md sticky top-0 border-b border-white/5">
-        <Link href="/">
-          <a className="text-2xl font-display font-bold tracking-tight">LUXE.</a>
-        </Link>
-        <div className="hidden md:flex gap-8 text-sm uppercase tracking-widest text-white/70">
-          <Link href="/destinations"><a className="hover:text-white transition-colors">Destinations</a></Link>
-          <Link href="/stories"><a className="hover:text-white transition-colors">Stories</a></Link>
-          <Link href="/gallery"><a className="hover:text-white transition-colors">Gallery</a></Link>
-          <Link href="/about"><a className="text-white">About</a></Link>
-        </div>
-        <Button variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white hover:text-black transition-all">
-          Book Now
-        </Button>
-      </nav>
+      <BookingModal isOpen={bookingOpen} onClose={() => setBookingOpen(false)} />
+      <Navbar onBookNow={() => setBookingOpen(true)} />
 
       {/* Hero Section */}
       <section className="relative py-24 md:py-40 px-6 overflow-hidden">

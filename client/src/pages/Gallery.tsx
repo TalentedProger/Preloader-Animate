@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Navbar } from "@/components/Navbar";
+import { BookingModal } from "@/components/BookingModal";
 import { Link } from "wouter";
 import { Maximize2, Camera, MapPin, Instagram } from "lucide-react";
 
@@ -84,23 +87,11 @@ const galleryItems = [
 ];
 
 export default function Gallery() {
+  const [bookingOpen, setBookingOpen] = useState(false);
   return (
     <div className="min-h-screen bg-black text-white font-sans">
-      {/* Navigation */}
-      <nav className="relative z-20 w-full px-6 py-6 md:px-12 flex justify-between items-center bg-black/50 backdrop-blur-md sticky top-0 border-b border-white/5">
-        <Link href="/">
-          <a className="text-2xl font-display font-bold tracking-tight">LUXE.</a>
-        </Link>
-        <div className="hidden md:flex gap-8 text-sm uppercase tracking-widest text-white/70">
-          <Link href="/destinations"><a className="hover:text-white transition-colors">Destinations</a></Link>
-          <Link href="/stories"><a className="hover:text-white transition-colors">Stories</a></Link>
-          <Link href="/gallery"><a className="text-white">Gallery</a></Link>
-          <Link href="/about"><a className="hover:text-white transition-colors">About</a></Link>
-        </div>
-        <Button variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white hover:text-black transition-all">
-          Book Now
-        </Button>
-      </nav>
+      <BookingModal isOpen={bookingOpen} onClose={() => setBookingOpen(false)} />
+      <Navbar onBookNow={() => setBookingOpen(true)} />
 
       {/* Hero Section */}
       <section className="relative py-24 md:py-32 px-6 overflow-hidden">
@@ -187,38 +178,33 @@ export default function Gallery() {
               </Button>
             </div>
 
-            <div className="relative z-10 flex justify-center items-end gap-0 h-[500px] overflow-visible pb-10">
+            <div className="relative z-10 grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
               {[stock1, stock2, stock3, stockMaldives, stockAlps].map((img, i) => {
-                // Simplified "Carousel" effect based on cards reference
-                const rotations = [-15, -7, 0, 7, 15];
-                const translations = [-60, -30, 0, 30, 60];
-                const yOffsets = [40, 20, 0, 20, 40];
+                // Staggered vertical offsets for a dynamic masonry feel
+                const topOffsets = ["md:mt-0", "md:mt-12", "md:mt-4", "md:mt-16", "md:mt-8"];
+                const heights = ["aspect-[3/4]", "aspect-[2/3]", "aspect-[3/4]", "aspect-[2/3]", "aspect-[3/4]"];
                 
                 return (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, y: 100 }}
-                    whileInView={{ 
-                      opacity: 1, 
-                      y: yOffsets[i],
-                      rotate: rotations[i],
-                      x: translations[i]
-                    }}
-                    whileHover={{ 
-                      y: -20, 
-                      scale: 1.1, 
-                      zIndex: 50,
-                      rotate: 0,
-                      transition: { duration: 0.3 }
-                    }}
-                    transition={{ delay: i * 0.1, duration: 0.8, ease: "easeOut" }}
-                    viewport={{ once: true }}
-                    className="w-64 aspect-[3/4] relative group overflow-hidden bg-white/5 border border-white/10 shadow-2xl rounded-2xl -ml-20 first:ml-0 cursor-pointer backdrop-blur-sm"
-                    style={{ zIndex: i }}
+                    initial={{ opacity: 0, y: 60, scale: 0.95 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    whileHover={{ y: -12, transition: { duration: 0.35, ease: "easeOut" } }}
+                    transition={{ delay: i * 0.1, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    className={`relative group overflow-hidden rounded-xl ${heights[i]} ${topOffsets[i]} ${i >= 2 ? "hidden md:block" : ""} cursor-pointer`}
                   >
-                    <img src={img} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt={`Visual journey ${i}`} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                      <Instagram className="w-8 h-8 text-white/80" />
+                    <img
+                      src={img}
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 scale-105 group-hover:scale-100 transition-all duration-700"
+                      alt={`Visual journey ${i + 1}`}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs uppercase tracking-[0.2em] text-white/70 font-medium">@luxetravel</span>
+                        <Instagram className="w-4 h-4 text-white/60" />
+                      </div>
                     </div>
                   </motion.div>
                 );
